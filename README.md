@@ -1,0 +1,154 @@
+# benchbook
+
+**A wiki your AI maintains — under rules it can't quietly change.**
+
+You build something with an LLM on a Tuesday. It works. Three months later you open the
+folder and have no idea why you chose that library, what the two rejected approaches were,
+or which of the four config files is the live one. The code survived. The reasoning didn't.
+
+benchbook is the system I use to fix that: a plain markdown wiki, in git, maintained by
+Claude Code under a written contract — a file the model reads at the start of every session
+that tells it what it may create, what it must ask about, and what it is never allowed to
+touch.
+
+No app. No database. No embeddings. Just files an agent is disciplined about.
+
+---
+
+## The problem it actually solves
+
+Building with an LLM is fast, and that speed is the trap. You produce more decisions per week
+than you can remember, and none of them write themselves down. Six months of that leaves you
+with a homelab, a pile of scripts, and a strong suspicion that past-you had reasons.
+
+What you want to recover later is rarely the code — it's:
+
+- **How** was this built (which stack, which wiring, which files are live)
+- **When** was it built, and what has changed since
+- **Why** was it built that way — including the options that were considered and dropped
+
+A README in each project captures the first. Git captures the second. Almost nothing captures
+the third, and the third is the one you actually miss.
+
+benchbook captures all three as a side effect of working, because the agent that helps you
+build is the same agent that files the record.
+
+> Lineage: this started from Andrej Karpathy's note on keeping an LLM-maintained wiki.
+> <!-- TODO: insert the actual gist URL before publishing -->
+
+---
+
+## What it is, concretely
+
+Five moving parts, all of them text:
+
+| Part | What it does |
+|---|---|
+| **The contract** (`agents-core.md`) | Read at every session start. Hard rules, page conventions, what needs human approval. The agent proposes changes to it; it never edits it silently. |
+| **Domains** | Top-level subject areas (`home/`, `projects/`, `knowledge/`, `books/`, …) plus a few special ones. Every page belongs to exactly one. |
+| **Page types** | `source`, `entity`, `reference`, `project` — each with a template and required frontmatter. |
+| **Indexes** | Per-domain catalogue files the agent reads *before* answering. This is the retrieval layer. There is no vector store. |
+| **Skills** | Claude Code skills for the recurring operations: ingest a source, start/open a project, lint the wiki, close a session. |
+
+The agent plays three roles against that structure — **Librarian** (files what comes in),
+**Advisor** (answers from what's filed), **Project Manager** (tracks what's in flight).
+
+---
+
+## Why this one and not a weekend prototype
+
+This is not a design sketch. It has been running continuously since May 2026 and currently
+holds **1,563 pages across 9 domains**, with **16 skills** and a log going back to the first
+week.
+
+That matters mostly because of what it produced: rules that exist *because something broke*.
+A few that are in the contract today only after the original version failed in practice —
+
+- **`update` was removed as a valid log operation.** An audit found 17 of 26 recent entries
+  were `update`, averaging 139 words against a 1–3 line spec, mostly duplicating text already
+  written on a project page in the same session. The log was growing ~10× faster than intended.
+- **The central todo file stopped mirroring project todos.** 60 of ~76 mirrored items had
+  silently drifted from the pages they were copied from. It's now pointer-only.
+- **The "split pages over ~500 words" rule was made measurable**, with explicit carve-outs,
+  after it turned out 27% of all pages breached it — a rule that flags a quarter of your
+  content steers nothing.
+
+Anyone can write a schema. The interesting part is which parts of it survived contact with
+six months of real use, and that is most of what the docs in this repo are about.
+
+---
+
+## Things built with it
+
+Not demos — these run:
+
+- **A daily two-host podcast.** Calendar, health metrics, weather and news → script → TTS →
+  a private feed, generated on demand for the morning commute.
+- **A used-marketplace buying assistant.** Hourly listing pickup, scored against
+  project-specific criteria by an LLM, high matches pushed to Telegram with a drafted
+  seller message and a price-history baseline.
+- **A book recommendation pipeline.** Captures recommendations from social posts and
+  screenshots, collision-checks them against a ~350-book library across four shelves,
+  and ranks what's left against a taste profile.
+- **A self-hosted health data store.** Wearable providers into a governed local store,
+  feeding a coaching layer with weekly reports and early-warning detection.
+
+Each one has a project page recording its phases, its rejected options, and — in two cases —
+an honest post-mortem on the parts that didn't validate.
+
+---
+
+## Quickstart
+
+Requires [Claude Code](https://claude.com/claude-code). No install script.
+
+```bash
+git clone https://github.com/Ulef1005/benchbook.git my-wiki && cd my-wiki
+```
+
+Then:
+
+1. **Read `agents-core.md`** — it's the contract. It's meant to be edited; it's yours now.
+2. **Delete the demo content** in `wiki/` once you've looked at it, keeping the folder shape.
+3. **Pick two domains to start.** Not nine. Domains are cheap to add later and expensive to
+   abandon half-populated.
+4. **Start Claude Code in the repo** and say *"read agents-core.md"*. It will greet you and
+   wait.
+5. **Ingest one thing** — an article, a video, a decision you already made — with
+   `/wiki-ingest`. Watch where it files it and correct it. That correction is how the
+   contract gets tuned to you.
+
+Full walkthrough: [`docs/01-concept.md`](docs/01-concept.md) →
+[`docs/07-operations.md`](docs/07-operations.md).
+
+---
+
+## Documentation
+
+| Doc | What's in it |
+|---|---|
+| [01 — Concept](docs/01-concept.md) | The problem in depth, the lineage, why not Notion/Obsidian/RAG |
+| [02 — The Contract](docs/02-the-contract.md) | `agents-core.md`, session start, hard rules, the satellite-file pattern |
+| [03 — Architecture](docs/03-architecture.md) | `raw/` → `wiki/` → `scripts/`, immutability, git as the substrate |
+| [04 — Domains](docs/04-domains.md) | What a domain is, the special ones, and the nine in real use |
+| [05 — Page Types](docs/05-page-types.md) | source / entity / reference / project, frontmatter, the Entity Placement Rule |
+| [06 — Indexes](docs/06-indexes.md) | How retrieval works with no embeddings |
+| [07 — Operations](docs/07-operations.md) | INGEST, QUERY, LINT |
+| [08 — Logs](docs/08-logs.md) | How logs work and why they carry the orientation load |
+| [09 — Projects](docs/09-projects.md) | The project page, its template, the status lifecycle |
+| [10 — Skills](docs/10-skills.md) | The core six, plus two showing more advanced patterns |
+| [11 — Keeping It Honest](docs/11-keeping-it-honest.md) | Anti-rot rules, the failure data behind them, human approval gates |
+| [12 — Case Studies](docs/12-case-studies.md) | The four builds above, in detail |
+| [13 — Privacy](docs/13-privacy.md) | `publish: false`, and sanitising a personal wiki before sharing |
+| [14 — Cost & Limits](docs/14-cost-and-limits.md) | What it costs to run, and what it's bad at |
+
+---
+
+## Status
+
+Early. The system is mature; this repo's packaging of it is not. Expect the docs to land
+before the demo content does.
+
+## License
+
+MIT.
