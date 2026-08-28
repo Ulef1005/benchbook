@@ -10,7 +10,7 @@ knowledge.
 | | |
 |---|---|
 | **Rules** | `agents-domain-projects.md` — section template, plan approval gate, status lifecycle, final-step rule |
-| **Skills** | None of its own. The core skills (`wiki-project-start`, `wiki-project-open`, `wiki-project-review`) cover this domain. |
+| **Skills** | None of its own — the core six already include `wiki-project-start`, `wiki-project-open` and `wiki-project-review`. |
 | **Folders** | `wiki/projects/`, `wiki/projects/completed/`, `wiki/projects/abandoned/`, `wiki/projects/references/` |
 | **Index** | `wiki/index-projects.md` |
 | **Schema** | No new page types, but the `project` type carries a six-section required template |

@@ -47,8 +47,10 @@ between a repo that's current and one that isn't.
 
 ## Two pattern examples
 
-These ship as demonstrations of what skills can do beyond the core loop. Both are genericized
-from live versions.
+These ship with their domain packs (`domains/knowledge/skills/`, `domains/home/skills/`) as
+demonstrations of what skills can do beyond the core loop. Both are genericized from live
+versions. Two further domain skills ship with the inert packs: `book-capture` (books) and
+`recipe-capture` (cooking).
 
 ### `research`
 

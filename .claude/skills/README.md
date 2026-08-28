@@ -26,10 +26,26 @@ works.
 You can also skip skills entirely at first. The contract alone is enough to run INGEST, QUERY
 and LINT — you just describe what you want instead of typing a command.
 
-## Skills ship in a later phase
+## What's here
 
-This starter's skill set is not yet populated. See [10 — Skills](../../docs/10-skills.md) for
-what's planned and, more usefully, for **when to write one of your own**:
+The **core six** — domain-independent, used in every wiki regardless of subject:
+
+| Skill | What it does |
+|---|---|
+| `wiki-ingest` | The full ingest workflow — detect, extract, propose domain, dispatch, post-flight |
+| `wiki-project-start` | Create a project page with all six sections and a **gated** plan stub |
+| `wiki-project-open` | Orient to an existing project — status, last activity, open questions |
+| `wiki-project-review` | Attack a plan one question at a time, before anything is built |
+| `wiki-lint` | Full maintenance pass — mechanical checks, judgement checks, dated report |
+| `wiki-session-close` | Verify, log, gate-check, commit, push |
+
+**Domain skills live with their domain**, not here — see `domains/<name>/skills/`. Installing a
+pack copies its skills into this folder. Currently available: `research` (knowledge),
+`deploy-runbook` (home), `book-capture` (books), `recipe-capture` (cooking).
+
+## Writing your own
+
+See [10 — Skills](../../docs/10-skills.md) for the full guidance. The trigger:
 
 > When you've performed the same multi-step sequence for the third time, write a skill.
 
