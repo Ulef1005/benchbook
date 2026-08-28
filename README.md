@@ -1,8 +1,8 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="design/readme-banner-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="design/readme-banner-light.png">
-    <img src="design/readme-banner-light.png" alt="benchbook" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/readme-banner-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="assets/readme-banner-light.png">
+    <img src="assets/readme-banner-light.png" alt="benchbook" width="100%">
   </picture>
 </p>
 
