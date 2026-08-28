@@ -74,12 +74,16 @@ confirms before any page is created; (3) read `agents-domain-<name>.md`; (4) ext
 takeaways; (6) read `agents-page-conventions.md` before writing.
 *Chat-dictation domains (projects) skip steps 1 & 4.*
 
-**Dispatch** (domain-specific) — run the ordered steps in `agents-domain-<name>.md`:
+**Dispatch** (domain-specific) — run the ordered steps in that domain's rules file. Installed
+domains only; a domain not listed here is not installed, and its pack is never loaded.
 
-| Domain | Flow |
-|---|---|
-| knowledge | source → entities (Entity Placement Rule) → 3-source channel trigger → reference only if 4+ entities |
-| projects | new vs existing → confirm status → write/update project page |
+| Domain | Rules file | Flow |
+|---|---|---|
+| knowledge | `domains/knowledge/agents-domain-knowledge.md` | source → entities (Entity Placement Rule) → 3-source channel trigger → reference only if 4+ entities |
+| projects | `domains/projects/agents-domain-projects.md` | new vs existing → confirm status → write/update project page |
+
+Further packs — homelab, books, cooking — ship in `domains/` and are **not installed**. See
+`domains/README.md` to install one.
 
 **Post-flight** (universal): flag contradictions; update `index-<domain>.md` (master
 `index.md` changes only when a domain or meta page is added); update `overview.md` if the big
@@ -118,7 +122,8 @@ The LLM-judgment checks — entity placement, contradictions, staleness — live
 
 **Folders:**
 
-- **Domains:** `knowledge`, `projects`. *(Add your own — see "Adding a domain" below.)*
+- **Domains installed:** `knowledge`, `projects`. Further packs available in `domains/` — see
+  "Adding a domain" below.
 - **Globals:** `sources/` (all source pages, flat, regardless of domain), `people/` (humans
   only).
 - **Domain-local:** `<domain>/entities/` + `<domain>/references/`. Subdomain distinctions live
@@ -137,11 +142,17 @@ domains reference it); existing entities are reviewed only when next touched:
 
 Cross-folder relations are first-class and expected.
 
-**Adding a domain.** Start with two. Add a third only when an existing domain genuinely can't
-hold something. Each new domain needs: a folder with `entities/` and `references/`, an
-`index-<domain>.md`, an `agents-domain-<name>.md` satellite, a row in the INGEST dispatch
-table above, and a pointer from `index.md`. Domains are cheap to add and expensive to abandon
-half-populated.
+**Adding a domain.** Domains ship as **packs** in `domains/<name>/` — rules file, skills, and
+an install note in that pack's README. `knowledge` and `projects` are installed; `homelab`,
+`books` and `cooking` are available and inert.
+
+To install one, read `domains/<name>/README.md` and follow its steps: add a dispatch row above,
+add the domain to the folder list, create its folders and index, copy its skills, and — if the
+pack extends the schema — add its page types to `agents-page-conventions.md`. The human may
+simply ask *"install the books domain pack"*; do the steps and report what changed.
+
+**Start with two.** Add a third only when an existing domain genuinely can't hold something.
+Domains are cheap to add and expensive to abandon half-populated.
 
 ### `scripts/` — Code Store
 
@@ -228,8 +239,8 @@ mirrored items had drifted from their source pages before this changed. Plus `##
 
 ## 7. Domain Rules
 
-Per-domain dispatch flows and conventions live in `agents-domain-<name>.md` — load the
-relevant one at INGEST pre-flight.
+Per-domain dispatch flows and conventions live in `domains/<name>/agents-domain-<name>.md` —
+load the relevant one at INGEST pre-flight, and only for installed domains.
 
 **Shared Flow — source-style domains:**
 

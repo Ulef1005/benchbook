@@ -87,6 +87,42 @@ performing the same multi-step sequence in a domain for the third time, that's a
 
 ---
 
+## Domain packs
+
+A domain isn't just a folder. It carries its own ingest flow, its own conventions, sometimes
+its own page types, and usually its own skills. So domains ship as **packs**:
+
+```
+domains/<name>/
+  README.md                    what it adds, and how to install it
+  agents-domain-<name>.md      dispatch flow and conventions
+  skills/                      skills belonging to this domain
+```
+
+Bundling them means adopting a subject area is one decision instead of six.
+
+| Pack | Skills | Extends the schema? |
+|---|---|---|
+| `knowledge` *(installed)* | `research` | no |
+| `projects` *(installed)* | — core skills cover it | no |
+| `homelab` | `deploy-runbook` | no |
+| `books` | `book-capture` | **yes** — author, series, candidate types |
+| `cooking` | `recipe-capture` | **yes** — recipe type |
+
+**Installing has no installer.** Ask your agent — *"install the books domain pack"* — and it
+reads that pack's README and does the five steps: add a dispatch row, add the folder entry,
+create the folders and index, copy the skills, and add any new page types to the conventions
+file. By hand it's the same list; `domains/README.md` spells it out.
+
+Uninstalling is the reverse. Nothing is entangled: a pack absent from the dispatch table is
+never loaded.
+
+The two packs that **extend the schema** are worth reading even if you don't want them —
+they're the proof that a domain may add page types when the core four genuinely can't hold
+something, and both carry rules that changed because measuring them proved them wrong.
+
+---
+
 ## Practical advice on starting
 
 **Start with two domains.** Not nine.

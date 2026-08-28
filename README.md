@@ -121,7 +121,7 @@ Five moving parts, all of them text:
 | Part | What it does |
 |---|---|
 | **The contract** (`agents-core.md`) | Read at every session start. Hard rules, page conventions, what needs human approval. The agent proposes changes to it; it never edits it silently. |
-| **Domains** | Top-level subject areas (`home/`, `projects/`, `knowledge/`, `books/`, …) plus a few special ones. Every page belongs to exactly one. |
+| **Domains** | Top-level subject areas, shipped as installable **packs** — rules, skills and page types bundled per subject. Two installed by default; `homelab`, `books` and `cooking` available. |
 | **Page types** | `source`, `entity`, `reference`, `project` — each with a template and required frontmatter. |
 | **Indexes** | Per-domain catalogue files the agent reads *before* answering. This is the retrieval layer. There is no vector store. |
 | **Skills** | Packaged procedures for the recurring operations: ingest a source, start/open a project, lint the wiki, close a session. Your tool may call these skills, commands, prompts, or rules. |
