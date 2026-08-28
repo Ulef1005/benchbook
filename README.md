@@ -33,8 +33,50 @@ the third, and the third is the one you actually miss.
 benchbook captures all three as a side effect of working, because the agent that helps you
 build is the same agent that files the record.
 
-> Lineage: this started from Andrej Karpathy's note on keeping an LLM-maintained wiki.
-> <!-- TODO: insert the actual gist URL before publishing -->
+---
+
+## Lineage
+
+This is an instantiation of Andrej Karpathy's
+[LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern — a
+deliberately abstract "idea file" describing three layers (immutable raw sources, an
+LLM-owned wiki, a co-evolved schema file) and three operations (ingest, query, lint). It
+closes by saying the directory structure, schema conventions, page formats and tooling "will
+depend on your domain, your preferences, and your LLM of choice," and invites you to build a
+version that fits.
+
+benchbook is what that turned into after six months of daily use. The three layers and the
+three operations survived unchanged — they're right. Most of this repo is the specifics the
+gist deliberately left open, plus the rules that turned out to be necessary past the scale it
+scopes for.
+
+What got added along the way:
+
+| Addition | Why |
+|---|---|
+| **Domains** as a first-class concept | One flat wiki stops being navigable somewhere in the low hundreds of pages |
+| **A split index** | The gist notes a single index works well at "~hundreds of pages." This one is at 1,563; the index is now one small master file plus a catalogue per domain |
+| **Page types with templates** | source / entity / reference / project, each with required frontmatter and a placement rule |
+| **Projects** | The gist's examples are research, reading, and business. Tracking things *you are building* — phases, rejected options, status — is a different shape and needed its own page type |
+| **Human approval gates** | The gist mentions humans-in-the-loop only for the team case. In personal use they turned out to be the thing that keeps the wiki trustworthy |
+| **Anti-bloat discipline** | See below — this is where experience actually contradicted the theory |
+
+### The one place six months disagreed with the gist
+
+The gist's argument for why this works is that humans abandon wikis because the maintenance
+burden grows faster than the value, and LLMs fix that because they don't get bored and the
+cost of maintenance falls to near zero.
+
+That's true, and it creates a second problem the gist doesn't anticipate: **when maintenance
+costs nothing, you get too much of it.** The failure mode in practice was never a neglected
+wiki. It was a wiki growing faster than anyone could read — logs filling with narrative that
+already existed on a project page, lists mirroring state that then drifted, pages accreting
+past the point of usefulness. Boredom was never the enemy. Enthusiasm was.
+
+So a real chunk of the contract exists to make the agent write *less*, in more specific
+places. The numbers behind those rules are in
+[11 — Keeping It Honest](docs/11-keeping-it-honest.md), and they're the part of this repo I'd
+read first.
 
 ---
 
@@ -55,14 +97,11 @@ The agent plays three roles against that structure — **Librarian** (files what
 
 ---
 
-## Why this one and not a weekend prototype
+## Rules that exist because something broke
 
-This is not a design sketch. It has been running continuously since May 2026 and currently
-holds **1,563 pages across 9 domains**, with **16 skills** and a log going back to the first
-week.
-
-That matters mostly because of what it produced: rules that exist *because something broke*.
-A few that are in the contract today only after the original version failed in practice —
+Running since May 2026, currently **1,563 pages across 9 domains** with **16 skills** and a
+log going back to the first week. The useful output of that isn't the page count — it's the
+rules that are in the contract today only because the obvious version failed in practice:
 
 - **`update` was removed as a valid log operation.** An audit found 17 of 26 recent entries
   were `update`, averaging 139 words against a 1–3 line spec, mostly duplicating text already
