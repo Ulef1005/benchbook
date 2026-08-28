@@ -1,36 +1,4 @@
-# Cost & Limits
-
-## What it costs to run
-
-> **Not yet measured.** The numbers below are structural — what drives cost — rather than
-> observed. Real per-session and per-month figures for a wiki of this size are pending
-> instrumentation and will be added here rather than estimated.
-
-What actually drives token spend, roughly in order:
-
-**The always-loaded contract.** Read at every session start. This is why the satellite-file
-pattern exists — the core file stays small and everything conditional sits behind a pointer.
-If you let the contract grow to a few thousand lines, you pay for all of it every time you say
-hello. Keeping it lean is a cost decision as much as a design one.
-
-**Ingest is the expensive operation.** Reading a full source, discussing takeaways, then
-writing several pages plus index updates. A long video transcript or a dense PDF is the
-worst case, because the whole thing gets read and a meaningful chunk gets embedded in the
-source page.
-
-**Query is cheap and gets cheaper.** Master index → domain index → two or three pages. The
-split index is what keeps this roughly flat as the wiki grows; a single index would make every
-question more expensive than the last.
-
-**Lint is the periodic spike.** The judgement-based checks — contradictions, staleness, entity
-placement — mean reading a lot of the wiki. This is why lint is manually triggered rather than
-automatic, and why the mechanical checks were pushed into a plain script that costs nothing to
-run on every commit.
-
-Levers if cost matters: keep the contract lean, split indexes before they hurt, run lint on a
-schedule you choose rather than reflexively, and use a smaller model for mechanical work.
-
----
+# Limits
 
 ## What it's bad at
 

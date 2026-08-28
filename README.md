@@ -219,7 +219,7 @@ reference material behind it.
 | [11 — Keeping It Honest](docs/11-keeping-it-honest.md) | Anti-rot rules, the failure data behind them, human approval gates |
 | [12 — Case Studies](docs/12-case-studies.md) | The four builds above, in detail |
 | [13 — Privacy](docs/13-privacy.md) | `publish: false`, and sanitising a personal wiki before sharing |
-| [14 — Cost & Limits](docs/14-cost-and-limits.md) | What it costs to run, and what it's bad at |
+| [14 — Limits](docs/14-limits.md) | What it's bad at, honestly |
 
 ---
 

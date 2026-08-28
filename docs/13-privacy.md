@@ -108,4 +108,4 @@ be readable by the agent, it doesn't belong in the wiki.
 
 ---
 
-**Next:** [14 — Cost & Limits](14-cost-and-limits.md).
+**Next:** [14 — Limits](14-limits.md).
