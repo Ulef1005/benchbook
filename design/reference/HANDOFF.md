@@ -33,9 +33,9 @@ container, no rounding. Tested legible at 16 px.
 ### Colour
 | Token | Hex | Use |
 |---|---|---|
-| Graphite | `#21201C` | Primary. Mark on light grounds, all text, dark backgrounds. |
+| Graphite | `#21201C` | Text, dark grounds, monochrome/print mark. |
 | Paper | `#F5F1E8` | Light ground. Mark on dark grounds. |
-| Neon | `#FF3DBE` | Accent only, once per surface. The mark in colour contexts. Never body text. |
+| Neon | `#FF3DBE` | **Default mark colour** on every shipped asset. Also single-element highlights. Never body text. |
 | Hairline on dark | `rgba(245,241,232,.14)` | 1 px rules on graphite |
 | Ruled line on paper | `rgba(33,32,28,.05)`, 34 px pitch | README banner texture |
 | Muted copy on dark | `rgba(245,241,232,.66)` | Social-card slogan |
@@ -52,9 +52,10 @@ No gradients. One accent, used once.
 ## Assets / views
 
 ### 1. Primary mark
-Transparent SVG, square, 512 px nominal. Variants: graphite, paper, neon, and a
-`currentColor` version for inline HTML/monochrome/stamp use. GitHub renders light and dark
-themes — use `<picture>` with `prefers-color-scheme` and swap graphite/paper.
+Transparent SVG, square, 512 px nominal. `mark-neon.svg` is the default and holds on both
+light and dark grounds, so the mark needs no theme swap. `mark-graphite.svg` /
+`mark-paper.svg` are the monochrome pair (print, stamps, single-colour contexts) — swap those
+two via `<picture>` + `prefers-color-scheme` if used. `mark-currentcolor.svg` for inline HTML.
 
 ### 2. Wordmark lockup
 Mark + `benchbook` in IBM Plex Mono 500. Reference sizes: 34 px mark / 24 px type in
@@ -65,7 +66,7 @@ social card.
 - **1280 × 640**, flat graphite `#21201C`. GitHub → Settings → Social preview.
 - Content centred as a column: lockup (140 px neon mark, gap 26 px, `benchbook` in Plex Mono
   500 / 84 px / paper), then the slogan 18 px below.
-- Slogan: **"The agentic workbench for builders."** — Plex Mono 400 / 28 px / line-height 1.5 /
+- Slogan: **"Your AI keeps the wiki. You keep the rules."** — Plex Mono 400 / 28 px / line-height 1.5 /
   `letter-spacing: .01em` / `rgba(245,241,232,.66)`, centred, max-width 840 px.
 - Two 1 px hairlines inset 36 px from top and bottom edges, full width minus 36 px each side.
 - Nothing else. No badges, no screenshots, no feature list. Must stay legible at ~400 px wide.
@@ -74,8 +75,22 @@ social card.
 - **1280 × 280**, paper `#F5F1E8` with a ruled-page texture:
   `repeating-linear-gradient(180deg, transparent 0, transparent 33px, rgba(33,32,28,.05) 34px)`.
 - Centred lockup: 72 px neon mark, 22 px gap, `benchbook` in Plex Mono 500 / 58 px / graphite.
-- Light-ground only today. If a dark variant is wanted, invert to graphite ground with paper
-  type and serve both via `<picture>`.
+- **Two variants, required.** A 1280 px `#F5F1E8` slab at the top of a dark-theme GitHub page
+  reads as a bright slab, so ship the inverted version too:
+  `readme-banner-dark.png` — graphite `#21201C` ground, ruled texture at
+  `rgba(245,241,232,.07)` (same 34 px pitch), paper `#F5F1E8` wordmark, neon mark unchanged.
+- Serve them theme-aware in the README:
+
+```html
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="design/readme-banner-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="design/readme-banner-light.png">
+  <img alt="benchbook" src="design/readme-banner-light.png" width="1280">
+</picture>
+```
+
+  The social card stays single-variant — GitHub accepts one social preview image and the
+  graphite ground already works in light and dark chat clients.
 
 ### 5. Favicon set — `design/favicon/`
 `favicon.svg` plus `favicon-16/32/180/512.png`. Neon mark on a full-bleed graphite tile so it
@@ -98,9 +113,10 @@ in the README via `<picture>` + `prefers-color-scheme`.
 ## Files in this bundle
 | File | What it is |
 |---|---|
-| `benchbook-brand.html` | Design reference: mark, 16 px legibility test, wordmark lockups, palette (options 1a / 1b) |
+| `benchbook-brand.html` | Design reference: brand sheet (mark swatches, 16 px legibility test, wordmark lockups, palette) plus a repo-page mockup in light and dark |
 | `benchbook-social-card.html` | Design reference: the 1280 × 640 social preview |
-| `benchbook-readme-banner.html` | Design reference: the 1280 × 280 README banner |
+| `benchbook-readme-banner.html` | Design reference: the 1280 × 280 README banner, light |
+| `benchbook-readme-banner-dark.html` | Design reference: the same banner, dark theme |
 | `design/` | Production assets: mark SVGs, PNG exports, favicons, and the asset README |
 
 ## Suggested repo placement
@@ -110,11 +126,14 @@ design/
   mark/                     mark-graphite.svg, mark-paper.svg, mark-neon.svg, mark-currentcolor.svg
   favicon/                  favicon.svg, favicon-16.png, favicon-32.png, favicon-180.png, favicon-512.png
   social-preview.png        upload via repo Settings, not referenced from the README
-  readme-banner.png         referenced at the top of README.md
+  readme-banner-light.png   referenced at the top of README.md (light theme)
+  readme-banner-dark.png    same, dark theme, via <picture> + prefers-color-scheme
 ```
 
 ## Screenshots
 
-`screenshots/mark-and-wordmark-options.png` — the full brand sheet (both explored directions; 1a was chosen)
+`screenshots/mark-and-wordmark-options.png` — the brand sheet
+`screenshots/repo-page-mockup-light-dark.png` — the mark in context: repo page, light and dark (generic code-host layout, not GitHub's own chrome)
 `screenshots/social-preview-1280x640.png` — the social card as exported
-`screenshots/readme-banner-1280x280.png` — the README banner as exported
+`screenshots/readme-banner-1280x280.png` — the light README banner as exported
+`screenshots/readme-banner-dark-1280x280.png` — the dark variant

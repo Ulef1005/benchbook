@@ -1,8 +1,12 @@
 <p align="center">
-  <img src="design/readme-banner.png" alt="benchbook" width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="design/readme-banner-dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="design/readme-banner-light.png">
+    <img src="design/readme-banner-light.png" alt="benchbook" width="100%">
+  </picture>
 </p>
 
-<p align="center"><strong>A wiki your AI maintains — under rules it can't quietly change.</strong></p>
+<p align="center"><strong>Your AI keeps the wiki. You keep the rules.</strong></p>
 
 You build something with an LLM on a Tuesday. It works. Three months later you open the
 folder and have no idea why you chose that library, what the two rejected approaches were,
