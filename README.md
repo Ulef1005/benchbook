@@ -1,6 +1,8 @@
-# benchbook
+<p align="center">
+  <img src="design/readme-banner.png" alt="benchbook" width="100%">
+</p>
 
-**A wiki your AI maintains — under rules it can't quietly change.**
+<p align="center"><strong>A wiki your AI maintains — under rules it can't quietly change.</strong></p>
 
 You build something with an LLM on a Tuesday. It works. Three months later you open the
 folder and have no idea why you chose that library, what the two rejected approaches were,
