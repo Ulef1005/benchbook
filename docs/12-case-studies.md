@@ -23,14 +23,25 @@ of those six is the flaky one? Where does the script template live? Why is one v
 configured differently from the other?
 
 The project page carries the wiring, the phases as they were completed, and the decisions —
-including two TTS providers evaluated and dropped, with the reason each lost. When the show
-stopped being a project and became a thing that just runs, ongoing operation moved to its own
-entity page, and the project page closed. That split matters: *build history* and *current
-state* are different questions asked at different times, and jamming them into one page makes
-both harder to answer.
+including the TTS history, which is the part worth showing. One provider was adopted and then
+replaced, because the replacement supported multi-speaker audio in a single API call and
+thereby deleted an entire audio-stitching step. A second, better-known provider was evaluated
+and rejected on a specific measurable ground: its dialogue mode was *more* length-constrained
+than the incumbent, not less.
 
-**The transferable bit:** when a build finishes, its record should fork — a frozen project
-page recording how it came to be, and a living entity page recording what it currently is.
+And then the detail that justifies this whole system. The chosen API accepts **exactly two
+speakers** — three returns a hard error, verified live against two different model versions.
+That constraint is why the show has two voiced hosts and a third character who is constantly
+quoted but never speaks. A creative format decision, driven entirely by an API limit.
+
+Nobody would ever reconstruct that. It looks like a writing choice. Eighteen months later,
+someone — including you — will propose adding a third voice, and the page answers in one line
+with the error message and the date it was verified.
+
+**The transferable bits:** first, when a build finishes, its record should fork — a frozen
+project page for how it came to be, a living entity page for what it currently is. Second, the
+constraints that shaped a design are worth more than the design, because the design is visible
+in the artifact and the constraints are not.
 
 ---
 
