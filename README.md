@@ -157,12 +157,19 @@ Then:
    `/wiki-ingest`. Watch where it files it and correct it. That correction is how the
    contract gets tuned to you.
 
-Full walkthrough: [`docs/01-concept.md`](docs/01-concept.md) →
-[`docs/07-operations.md`](docs/07-operations.md).
+Then read [**A Day in the Life**](docs/day-in-the-life.md), which walks three real tasks end
+to end — it'll make the rest of the docs land faster than reading them in order.
 
 ---
 
 ## Documentation
+
+**Start here:** [**A Day in the Life**](docs/day-in-the-life.md) — three worked examples,
+start to finish. Building an ESP32 project you saw on YouTube; researching, choosing and
+deploying a self-hosted Telegram bot; and learning to fly FPV drones. Concrete steps, which
+skill runs when, and what ends up in the wiki at each point.
+
+The numbered docs below are the reference material behind it.
 
 | Doc | What's in it |
 |---|---|
