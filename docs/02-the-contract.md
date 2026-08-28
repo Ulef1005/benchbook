@@ -121,6 +121,33 @@ of failures, and the data behind them.
 
 ---
 
+## Wiring it to your tool
+
+The contract itself is plain markdown and tool-agnostic. The only tool-specific question is
+**how your agent gets told to read it at session start.**
+
+Most agentic tools auto-read a conventional file at the repo root. So the pattern is a
+one-line adapter per tool, all pointing at the same contract:
+
+```
+agents-core.md      ← the contract. The real thing.
+├── CLAUDE.md       ← one line: @agents-core.md
+└── AGENTS.md       ← a short "read agents-core.md first"
+```
+
+Both ship in this repo, so Claude Code and any `AGENTS.md`-aware tool (Codex, Cursor, and a
+growing number of others) pick it up without configuration. For anything else, add its
+equivalent file — or simply open a session and say *"read agents-core.md"*.
+
+Keeping the contract in its own neutrally-named file, rather than writing it directly into
+`CLAUDE.md`, is deliberate. It means switching tools costs one adapter file instead of a
+migration, and it keeps the thing under version control from being named after a vendor.
+
+The only genuinely tool-shaped part of the system is skills — see
+[10 — Skills](10-skills.md). Everything else is markdown.
+
+---
+
 ## Adapting it
 
 Fork the contract and change it. It is not a standard, and roughly a third of it encodes

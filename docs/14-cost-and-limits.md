@@ -81,13 +81,17 @@ are the weak case; and finding a phrase inside page bodies isn't what this does 
 
 ### It requires a specific kind of tool, and a specific kind of person
 
-You need an agentic tool with real filesystem access. A chat window you paste into won't do
-it — the whole model depends on the agent reading and writing many files in one pass.
+You need an agentic tool with real filesystem access — one that can read and write many files
+in a repo in a single pass. Which tool doesn't matter; a chat window you paste into does.
 
-And you have to be willing to edit the contract. Perhaps 40% of the shipped one encodes
-decisions specific to one person's setup. Adopted wholesale and never touched, it will steer
-you toward someone else's conventions, and you'll experience that as the system being
-subtly wrong without being able to say why.
+And you have to be willing to edit the contract. The shipped one is sanitized, but it is not
+neutral — the page-length thresholds, the 4-entity reference rule, the predicate vocabulary
+and the log's five operations are all *opinions*, formed against one person's material.
+Adopted wholesale and never questioned, they'll steer you toward someone else's conventions,
+and you'll experience that as the system being subtly wrong without being able to say why.
+
+The contract is meant to be argued with. That's why it's a file in your repo rather than a
+setting in a product.
 
 ### The first month is the hard part
 

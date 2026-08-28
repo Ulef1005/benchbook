@@ -12,10 +12,12 @@ You build something with an LLM on a Tuesday. It works. Three months later you o
 folder and have no idea why you chose that library, what the two rejected approaches were,
 or which of the four config files is the live one. The code survived. The reasoning didn't.
 
-benchbook is the system I use to fix that: a plain markdown wiki, in git, maintained by
-Claude Code under a written contract — a file the model reads at the start of every session
-that tells it what it may create, what it must ask about, and what it is never allowed to
-touch.
+benchbook is the system I use to fix that: a plain markdown wiki, in git, maintained by an AI
+agent under a written contract — a file the model reads at the start of every session that
+tells it what it may create, what it must ask about, and what it is never allowed to touch.
+
+It is not tied to any one assistant. Any agentic tool that can read and write files in a repo
+can run it.
 
 No app. No database. No embeddings. Just files an agent is disciplined about.
 
@@ -122,7 +124,7 @@ Five moving parts, all of them text:
 | **Domains** | Top-level subject areas (`home/`, `projects/`, `knowledge/`, `books/`, …) plus a few special ones. Every page belongs to exactly one. |
 | **Page types** | `source`, `entity`, `reference`, `project` — each with a template and required frontmatter. |
 | **Indexes** | Per-domain catalogue files the agent reads *before* answering. This is the retrieval layer. There is no vector store. |
-| **Skills** | Claude Code skills for the recurring operations: ingest a source, start/open a project, lint the wiki, close a session. |
+| **Skills** | Packaged procedures for the recurring operations: ingest a source, start/open a project, lint the wiki, close a session. Your tool may call these skills, commands, prompts, or rules. |
 
 The agent plays three roles against that structure — **Librarian** (files what comes in),
 **Advisor** (answers from what's filed), **Project Manager** (tracks what's in flight).
@@ -171,7 +173,8 @@ an honest post-mortem on the parts that didn't validate.
 
 ## Quickstart
 
-Requires [Claude Code](https://claude.com/claude-code). No install script.
+Requires an agentic tool that can read and write files in a repository — [Claude Code](https://claude.com/claude-code),
+Codex, Cursor, or similar. No install script, no dependencies.
 
 ```bash
 git clone https://github.com/Ulef1005/benchbook.git my-wiki && cd my-wiki
@@ -183,8 +186,9 @@ Then:
 2. **Delete the demo content** in `wiki/` once you've looked at it, keeping the folder shape.
 3. **Pick two domains to start.** Not nine. Domains are cheap to add later and expensive to
    abandon half-populated.
-4. **Start Claude Code in the repo** and say *"read agents-core.md"*. It will greet you and
-   wait.
+4. **Start your agent in the repo** and say *"read agents-core.md"*. It will greet you and
+   wait. (`CLAUDE.md` and `AGENTS.md` both point at the contract, so most tools pick it up
+   without being asked.)
 5. **Ingest one thing** — an article, a video, a decision you already made — with
    `/wiki-ingest`. Watch where it files it and correct it. That correction is how the
    contract gets tuned to you.

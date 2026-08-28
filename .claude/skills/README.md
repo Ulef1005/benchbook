@@ -1,10 +1,30 @@
-# .claude/skills/ — Claude Code skills
+# Skills
 
-Packaged, named procedures the agent can invoke — a set of instructions for a recurring
-multi-step task, triggered by a slash command or by recognising the situation.
+A skill is a packaged, named procedure the agent can invoke — instructions for a recurring
+multi-step task, triggered by a command or by recognising the situation.
 
 The contract (`agents-core.md`) defines *what the wiki is*. Skills define *how specific jobs
 get done in it*.
+
+## The one tool-specific part
+
+Everything else in benchbook is plain markdown that any agentic tool can read. Skills are the
+exception: **where they live and how they're invoked differs per tool.**
+
+| Tool | Location |
+|---|---|
+| Claude Code | `.claude/skills/<name>/SKILL.md`, invoked as `/<name>` |
+| Codex and other `AGENTS.md`-based tools | prompt files, or procedures described in `AGENTS.md` |
+| Cursor | `.cursor/rules/`, or custom commands |
+| Anything else | wherever that tool keeps reusable prompts |
+
+This folder uses the Claude Code layout because that's where the system was built. If you're
+on a different tool, **the procedures port fine — only the packaging changes.** Each skill is
+an ordered list of steps in plain language; move it to your tool's equivalent location and it
+works.
+
+You can also skip skills entirely at first. The contract alone is enough to run INGEST, QUERY
+and LINT — you just describe what you want instead of typing a command.
 
 ## Skills ship in a later phase
 

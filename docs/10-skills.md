@@ -1,10 +1,20 @@
 # Skills
 
 A skill is a packaged, named procedure the agent can invoke — a set of instructions for a
-recurring multi-step task, in a file, triggered by a slash command or by recognising the
-situation.
+recurring multi-step task, in a file, triggered by a command or by recognising the situation.
 
 The contract defines *what the wiki is*. Skills define *how specific jobs get done in it*.
+
+> **Skills are the one tool-specific part of benchbook.** Everything else here is plain
+> markdown any agentic tool can read. Where skills live and how you invoke them varies:
+> `.claude/skills/<name>/SKILL.md` invoked as `/<name>` in Claude Code, prompt files or
+> `AGENTS.md` procedures in Codex-style tools, `.cursor/rules/` in Cursor. **The procedures
+> themselves port unchanged** — each is an ordered list of steps in plain language. Only the
+> packaging differs.
+>
+> The commands written as `/name` below are Claude Code syntax. Substitute your own tool's
+> invocation, or simply describe what you want — the contract alone is enough to run every
+> operation without a single skill installed.
 
 ---
 

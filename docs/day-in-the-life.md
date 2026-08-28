@@ -15,6 +15,11 @@ Each follows the same four-beat loop, which is worth naming because it's the sam
 The thing to watch for in all three: **the human makes every judgement call, and the agent
 does every piece of bookkeeping.** That division is the entire system.
 
+> **On the `/commands` below.** They're Claude Code syntax, because that's what this was built
+> on. benchbook isn't tied to it — any agentic tool that reads and writes files in a repo will
+> do. Substitute your tool's invocation, or just describe what you want in plain language; the
+> contract is what drives the behaviour, not the command name.
+
 ---
 
 ## Example 1 — You saw an ESP32 project on YouTube and want to build it
