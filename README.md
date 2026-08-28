@@ -15,6 +15,32 @@ No app. No database. No embeddings. Just files an agent is disciplined about.
 
 ---
 
+## See it work
+
+The fastest way to understand this is to watch it handle three ordinary tasks. Each one is
+walked step by step in [**A Day in the Life**](docs/day-in-the-life.md):
+
+> **🔧 You saw a funky ESP32 project on YouTube and want to build it.**
+> The video becomes a source page with the transcript embedded. The *build* becomes a separate
+> project page — and nothing gets written until you've approved a plan. Eight months later,
+> when the display goes blank, the pinned library version and the reason it's pinned are one
+> click away.
+
+> **🤖 You want a self-hosted Telegram bot, but don't know which repo to use.**
+> Research four candidates, record why the most popular one lost, then deploy with the seven
+> boring integration steps pre-filled and unticked so none of them get skipped. The bot token
+> never touches the wiki. When the framework ships a major version, release tracking tells you.
+
+> **🚁 You want to learn to fly FPV drones.**
+> Not software at all. A learning path with gates between phases, a price baseline before you
+> shop, and — the valuable part — every gear option you *rejected*, with your reasoning, dated.
+> So when someone enthusiastically recommends the goggles you already ruled out, you know why.
+
+Each example names the command that runs, what you decide versus what the agent does, and
+exactly what ends up written down.
+
+---
+
 ## The problem it actually solves
 
 Building with an LLM is fast, and that speed is the trap. You produce more decisions per week
@@ -164,12 +190,9 @@ to end — it'll make the rest of the docs land faster than reading them in orde
 
 ## Documentation
 
-**Start here:** [**A Day in the Life**](docs/day-in-the-life.md) — three worked examples,
-start to finish. Building an ESP32 project you saw on YouTube; researching, choosing and
-deploying a self-hosted Telegram bot; and learning to fly FPV drones. Concrete steps, which
-skill runs when, and what ends up in the wiki at each point.
-
-The numbered docs below are the reference material behind it.
+[**A Day in the Life**](docs/day-in-the-life.md) — the three worked examples from the top of
+this page, in full. Start here if you haven't already; the numbered docs below are the
+reference material behind it.
 
 | Doc | What's in it |
 |---|---|
