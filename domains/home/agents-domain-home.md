@@ -1,22 +1,32 @@
-# benchbook — Domain Rules: Homelab
+# benchbook — Domain Rules: Home
 
-> Loaded during INGEST for the homelab domain. Read alongside `agents-core.md`.
+> Loaded during INGEST for the home domain. Read alongside `agents-core.md`.
 > The shared source-style dispatch flow is in `agents-core.md § 7 Domain Rules`.
 
 ---
 
 ## What belongs here
 
-Hardware and self-hosted software you **own and operate** — servers, single-board computers,
-network gear, peripherals, appliances, and the services running on them.
+**Everything you own and operate.** Servers, single-board computers, network gear,
+peripherals, appliances, devices, tools — and the software running on them.
 
-The distinction that matters, per the Entity Placement Rule:
+This domain is the counterpart to `knowledge`, and together they resolve the Entity Placement
+Rule's central question:
 
-- The *general* product or tool → `wiki/knowledge/entities/`
-- The *specific instance you run* → `wiki/homelab/entities/`
+| | |
+|---|---|
+| **knowledge** | what exists *in the world* — the general product, tool or concept |
+| **home** | what *you have* — the specific instance you own and run |
 
-So a container runtime is a knowledge entity; the particular machine you run it on is a
-homelab entity. Both exist, and they link to each other.
+So a container runtime is a knowledge entity; the particular machine you run it on is a home
+entity. A camera model is knowledge; *your* camera is home. Both exist, and they link to each
+other.
+
+Without this domain installed, the Entity Placement Rule has nowhere to send an owned thing —
+which is why it ships installed by default.
+
+**Self-hosted infrastructure is the heaviest use** of this domain for most people, and the
+rules below lean that way. They apply equally to a coffee machine.
 
 **Default subdomain assignment:**
 
@@ -26,7 +36,7 @@ homelab entity. Both exist, and they link to each other.
 | `appliances` | Smart-home devices, kitchen and household appliances, anything with a plug and an opinion |
 | *(cross-subdomain)* | Ask the human |
 
-References live flat in `wiki/homelab/references/`.
+References live flat in `wiki/home/references/`.
 
 **Page types this domain produces:**
 
@@ -107,4 +117,4 @@ moments above are exactly when you've read the docs properly and know which part
 - [ ] Software entity: `repo_url:` set, `change_history: true` proposed
 - [ ] No credentials in any pasted config
 - [ ] Two-way links between source and entities
-- [ ] `index-homelab.md` updated
+- [ ] `index-home.md` updated

@@ -80,9 +80,10 @@ domains only; a domain not listed here is not installed, and its pack is never l
 | Domain | Rules file | Flow |
 |---|---|---|
 | knowledge | `domains/knowledge/agents-domain-knowledge.md` | source → entities (Entity Placement Rule) → 3-source channel trigger → reference only if 4+ entities |
+| home | `domains/home/agents-domain-home.md` | source → owned/considered/referenced checkpoint → entities → reference only if 4+ entities |
 | projects | `domains/projects/agents-domain-projects.md` | new vs existing → confirm status → write/update project page |
 
-Further packs — homelab, books, cooking — ship in `domains/` and are **not installed**. See
+Further packs — books, cooking — ship in `domains/` and are **not installed**. See
 `domains/README.md` to install one.
 
 **Post-flight** (universal): flag contradictions; update `index-<domain>.md` (master
@@ -122,8 +123,9 @@ The LLM-judgment checks — entity placement, contradictions, staleness — live
 
 **Folders:**
 
-- **Domains installed:** `knowledge`, `projects`. Further packs available in `domains/` — see
-  "Adding a domain" below.
+- **Domains installed:** `knowledge` (what exists in the world), `home` (what you own and
+  operate), `projects` (what you're building). These three are the minimum coherent set — see
+  "Why three" below. Further packs available in `domains/`.
 - **Globals:** `sources/` (all source pages, flat, regardless of domain), `people/` (humans
   only).
 - **Domain-local:** `<domain>/entities/` + `<domain>/references/`. Subdomain distinctions live
@@ -137,13 +139,20 @@ domains reference it); existing entities are reviewed only when next touched:
 | Entity | Folder |
 |---|---|
 | Concrete humans | `wiki/people/` |
-| Owned/specific instances (your particular server, your specific device) | `wiki/<domain>/entities/` |
+| Owned/specific instances (your particular server, your specific device) | `wiki/home/entities/`, or another domain's `entities/` if one fits better |
 | General concepts / products / tools | `wiki/knowledge/entities/` |
 
-Cross-folder relations are first-class and expected.
+Cross-folder relations are first-class and expected — the general product and your specific
+instance of it are two pages that link to each other.
+
+**Why three domains ship installed.** The rule above has three branches, and each needs a
+destination. `people/` covers humans and `knowledge/` covers general things; without `home/`,
+an owned thing has nowhere correct to go — `projects/` is wrong, because a project is something
+you're *building*, not something you *have*. Drop any of the three and the rule becomes
+unsatisfiable.
 
 **Adding a domain.** Domains ship as **packs** in `domains/<name>/` — rules file, skills, and
-an install note in that pack's README. `knowledge` and `projects` are installed; `homelab`,
+an install note in that pack's README. `knowledge`, `home` and `projects` are installed;
 `books` and `cooking` are available and inert.
 
 To install one, read `domains/<name>/README.md` and follow its steps: add a dispatch row above,
@@ -151,8 +160,10 @@ add the domain to the folder list, create its folders and index, copy its skills
 pack extends the schema — add its page types to `agents-page-conventions.md`. The human may
 simply ask *"install the books domain pack"*; do the steps and report what changed.
 
-**Start with two.** Add a third only when an existing domain genuinely can't hold something.
-Domains are cheap to add and expensive to abandon half-populated.
+**Stop at three for a while.** The installed set already covers the Entity Placement Rule. Add
+a fourth only when an existing domain genuinely can't hold something — not merely when you have
+a lot of pages about a subject. Domains are cheap to add and expensive to abandon
+half-populated.
 
 ### `scripts/` — Code Store
 

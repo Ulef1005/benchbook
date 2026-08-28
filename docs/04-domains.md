@@ -32,9 +32,9 @@ the live wiki those are:
 
 | Domain | What's in it |
 |---|---|
-| `home` | The physical/digital home — hardware, servers, automation, appliances, travel |
-| `knowledge` | General concepts, tools, and products not tied to one thing you own |
-| `projects` | Things being built or tracked |
+| `knowledge` | What exists in the world — general concepts, tools, products not tied to one thing you own |
+| `home` | What you own and operate — hardware, servers, automation, appliances |
+| `projects` | What you're building, planning, or tracking |
 | `books` | Reading — books, authors, series, to-read candidates |
 | `cooking` | Recipes and meal planning |
 | `sports` | Training and gear, split by sport |
@@ -47,7 +47,7 @@ the live wiki those are:
 | Location | Rule |
 |---|---|
 | `sources/` | **All** source pages, globally, regardless of domain. The `domain:` field is the only signal of where a source belongs; the index groups by it. |
-| `people/` | Humans only. No status field, and a section used by the meal planner. |
+| `people/` | Humans only — no status field. Domain packs may add sections here (the cooking pack, for instance, uses a preferences section for meal planning). |
 | `log/` | The chronological record plus its archives and lint reports. |
 
 `sources/` being global is a deliberate call that took a while to settle. Source pages are
@@ -65,11 +65,13 @@ The hardest recurring call is entities, which gets its own rule — see the Enti
 Rule in [05 — Page Types](05-page-types.md). The short version:
 
 - A **person** → `people/`
-- A **specific thing you own or operate** → that domain's `entities/`
+- A **specific thing you own or operate** → `home/entities/` (or another domain's, if one fits
+  better)
 - A **general concept, product, or tool** → `knowledge/entities/`
 
 So your particular server is a home entity; the operating system it runs is a knowledge
-entity. Cross-folder relations between them are normal and expected.
+entity. `knowledge` and `home` are deliberately a pair — *what exists* versus *what you have* —
+and cross-folder relations between them are normal and expected.
 
 ---
 
@@ -104,10 +106,16 @@ Bundling them means adopting a subject area is one decision instead of six.
 | Pack | Skills | Extends the schema? |
 |---|---|---|
 | `knowledge` *(installed)* | `research` | no |
+| `home` *(installed)* | `deploy-runbook` | no |
 | `projects` *(installed)* | — core skills cover it | no |
-| `homelab` | `deploy-runbook` | no |
 | `books` | `book-capture` | **yes** — author, series, candidate types |
 | `cooking` | `recipe-capture` | **yes** — recipe type |
+
+**The three installed packs are the minimum coherent set**, not an arbitrary starter. The
+Entity Placement Rule sends humans to `people/`, general things to `knowledge/entities/`, and
+*owned* things to a domain's own `entities/` — and without `home`, that last branch has no
+destination. `projects` can't take it: a project is something you're building, not something
+you have. Drop any of the three and the rule stops being satisfiable.
 
 **Installing has no installer.** Ask your agent — *"install the books domain pack"* — and it
 reads that pack's README and does the five steps: add a dispatch row, add the folder entry,
@@ -125,14 +133,15 @@ something, and both carry rules that changed because measuring them proved them 
 
 ## Practical advice on starting
 
-**Start with two domains.** Not nine.
+**Live on the three installed domains for a while.** Don't install everything.
 
-The nine above accumulated over months, each one added when existing domains genuinely
-couldn't hold something. Copying all nine upfront gets you seven empty folders, an index full
-of headings with nothing under them, and an agent making placement decisions between
-categories that have no content to compare against.
+The nine in the wiki this came from accumulated over months, each added when existing domains
+genuinely couldn't hold something. Installing all of them upfront gets you six empty folders,
+an index full of headings with nothing under them, and an agent making placement decisions
+between categories that have no content to compare against.
 
-Domains are cheap to add later and expensive to abandon half-populated.
+Add a fourth when you actually reach for it and it isn't there — not because a pack looks
+interesting. Domains are cheap to add later and expensive to abandon half-populated.
 
 **A note on skew.** In the live wiki, the books domain is roughly 47% of all pages — the
 result of a bulk library import. That's fine, but it's worth knowing that one import can

@@ -24,8 +24,9 @@ index. That two-step is what keeps retrieval cost flat as the wiki grows. See
 
 ## Domain Indexes
 
-- [Knowledge](index-knowledge.md) — general concepts, tools, products, techniques
-- [Projects](index-projects.md) — things being built, planned, or tracked
+- [Knowledge](index-knowledge.md) — what exists in the world: general concepts, tools, products
+- [Home](index-home.md) — what you own and operate: hardware, devices, self-hosted services
+- [Projects](index-projects.md) — what you're building, planning, or tracking
 
 ## Meta
 

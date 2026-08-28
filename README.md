@@ -121,7 +121,7 @@ Five moving parts, all of them text:
 | Part | What it does |
 |---|---|
 | **The contract** (`agents-core.md`) | Read at every session start. Hard rules, page conventions, what needs human approval. The agent proposes changes to it; it never edits it silently. |
-| **Domains** | Top-level subject areas, shipped as installable **packs** — rules, skills and page types bundled per subject. Two installed by default; `homelab`, `books` and `cooking` available. |
+| **Domains** | Top-level subject areas, shipped as installable **packs** — rules, skills and page types bundled per subject. Three installed by default (`knowledge`, `home`, `projects`); `books` and `cooking` available. |
 | **Page types** | `source`, `entity`, `reference`, `project` — each with a template and required frontmatter. |
 | **Indexes** | Per-domain catalogue files the agent reads *before* answering. This is the retrieval layer. There is no vector store. |
 | **Skills** | Packaged procedures for the recurring operations: ingest a source, start/open a project, lint the wiki, close a session. Your tool may call these skills, commands, prompts, or rules. |
@@ -184,8 +184,9 @@ Then:
 
 1. **Read `agents-core.md`** — it's the contract. It's meant to be edited; it's yours now.
 2. **Delete the demo content** in `wiki/` once you've looked at it, keeping the folder shape.
-3. **Pick two domains to start.** Not nine. Domains are cheap to add later and expensive to
-   abandon half-populated.
+3. **Live on the three installed domains for a while.** `knowledge`, `home` and `projects` are
+   the minimum set that makes the placement rules work. Add a fourth when you reach for it and
+   it isn't there.
 4. **Start your agent in the repo** and say *"read agents-core.md"*. It will greet you and
    wait. (`CLAUDE.md` and `AGENTS.md` both point at the contract, so most tools pick it up
    without being asked.)

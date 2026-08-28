@@ -27,6 +27,10 @@ things you've filed, rather than the things themselves.
 
 *(one paragraph, once there's something to summarise)*
 
+### Home
+
+*(one paragraph)*
+
 ### Projects
 
 *(one paragraph)*

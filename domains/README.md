@@ -19,18 +19,24 @@ adopting a subject area is one decision instead of six.
 
 | Pack | What it's for | Skills | Extends the schema? |
 |---|---|---|---|
-| [knowledge](knowledge/) | General concepts, tools, products, techniques — things that exist independently of you | `research` | no |
-| [projects](projects/) | Things you're building, planning, or tracking | — (core skills cover it) | no |
-| [homelab](homelab/) | Self-hosted services and hardware you own and operate | `deploy-runbook` | no |
+| [knowledge](knowledge/) | What exists in the world — general concepts, tools, products, techniques | `research` | no |
+| [home](home/) | What you own and operate — hardware, devices, self-hosted services | `deploy-runbook` | no |
+| [projects](projects/) | What you're building, planning, or tracking | — (core skills cover it) | no |
 | [books](books/) | Reading — what you've read, what you might read, and why | `book-capture` | **yes** — adds author, series, candidate page types |
 | [cooking](cooking/) | Recipes and meal planning | `recipe-capture` | **yes** — adds the recipe page type |
 
-**knowledge** and **projects** are installed by default in a fresh clone. The rest are
-available and inert until you install them.
+**knowledge**, **home** and **projects** are installed by default. The rest are available and
+inert until you install them.
+
+Those three aren't an arbitrary starter set — they're the minimum that makes the **Entity
+Placement Rule** satisfiable. That rule sends humans to `people/`, general things to
+`knowledge/entities/`, and *owned* things to a domain's own `entities/`. Without `home`, that
+last branch has no destination: `projects` is wrong, because a project is something you're
+building rather than something you have. Drop any of the three and something has nowhere to go.
 
 ---
 
-## Install two. Not five.
+## Then stop for a while.
 
 The temptation is to install everything on day one. Don't.
 
@@ -39,9 +45,9 @@ domain genuinely couldn't hold something. Installing all of them upfront gets yo
 folders, an index full of headings with nothing under them, and an agent making placement
 decisions between categories that have no content to compare against.
 
-**Domains are cheap to add later and expensive to abandon half-populated.** Start with the two
-that are already installed, or swap one out for a pack that fits you better. Add a third when
-you actually reach for it and it isn't there.
+**Domains are cheap to add later and expensive to abandon half-populated.** Live on the three
+installed ones for a while. Add a fourth when you actually reach for it and it isn't there —
+not because a pack looks interesting.
 
 ---
 
