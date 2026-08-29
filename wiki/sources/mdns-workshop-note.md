@@ -4,7 +4,7 @@ type: source
 created: 2026-08-29
 domain: knowledge
 subdomain: null
-publish: false
+publish: true
 tags: [guide, demo, validation-test]
 sources: []
 raw_file: "raw/validation-test-note.md"

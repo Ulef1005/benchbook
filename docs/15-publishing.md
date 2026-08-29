@@ -5,10 +5,10 @@ editor, or GitHub's own file browser shows it. Publishing is not a step every wi
 for a specific surface: a phone away from a keyboard, a kitchen display, a tablet on a
 workbench. If you don't have one of those, skip this doc.
 
-**A working example ships in this repo at [`site/`](../site/)** — a minimal, unstyled Astro
-site that reads `wiki/` directly and applies everything below. Real design lands there via the
-`benchbook-design` skill once it exists; the structure and the `wiki/` reading logic
-(`site/src/lib/wiki.js`) are already real and buildable (`npm install && npm run build`).
+**A working example ships in this repo at [`site/`](../site/)** — an Astro site, designed via
+the `benchbook-design` skill (`.claude/skills/benchbook-design/`), that reads `wiki/`, `docs/`,
+`agents-*.md`, and `domains/*/README.md` directly and applies everything below. Buildable now
+(`cd site && npm install && npm run build`); deploys via GitHub Pages once pushed to `main`.
 
 ---
 
@@ -59,11 +59,12 @@ Whatever generator you pick, a few things are specific to how this wiki is struc
   `.md` links correctly before assuming wiki-style tools are a natural fit — some assume
   wikilinks and need a plugin or a rewrite pass to handle plain relative links instead.
 - **Respect `publish: false`.** Every page defaults to unpublished. The build step needs to
-  filter on that frontmatter field, not publish everything by default. (`site/`'s demo build
-  is the one deliberate exception — every demo page here is `publish: false` because nothing
-  has been through an actual publish decision yet, not because it's meant to stay hidden, so
-  the demo build opts in via a `PUBLIC_DEMO_MODE` flag rather than showing an empty site. A
-  real fork's build shouldn't set that flag — it should make real per-page decisions instead.)
+  filter on that frontmatter field, not publish everything by default — `site/`'s
+  `publishedWiki()` is the single choke point every page read goes through, re-asserted after
+  every build by `scripts/check-privacy.mjs` scanning `dist/` for anything that shouldn't have
+  reached it. The 14 demo pages carry `publish: true` as a deliberate per-page decision, not a
+  bypass — a fork bringing real content makes that same call per page, starting from the
+  schema's own `false` default.
 - **Optimize for low maintenance.** The wiki side of this system is maintained by an agent, not
   necessarily by you checking in daily. A generator with a slow feedback loop or a lot of
   framework-specific debugging is a worse fit here than one that's boring and stable, even if

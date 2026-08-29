@@ -1,0 +1,50 @@
+---
+import Base from "../../layouts/Base.astro";
+import Sidebar from "../../components/Sidebar.astro";
+import { wikiNav } from "../../lib/nav";
+import { publishedWiki, place } from "../../lib/wiki";
+
+const groups = await wikiNav();
+const pages = await publishedWiki();
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const domains = [...new Set(pages.map((p) => place(p.id).domain))]
+  .filter((d) => d && d !== "meta")
+  .map((d) => ({ name: d, count: pages.filter((p) => place(p.id).domain === d && place(p.id).slug).length }));
+---
+<Base title="The wiki" section="wiki">
+  <div class="shell">
+    <Sidebar groups={groups} current={Astro.url.pathname} />
+    <article class="prose">
+      <div class="eyebrow">Master index</div>
+      <h1>The wiki</h1>
+      <p>Deliberately short. The agent reads this first, identifies the relevant domain, then reads
+        <em>only that domain's</em> index. That two-step is what keeps retrieval cost flat as the wiki
+        grows — see <a href={`${base}/docs/06-indexes/`}>06 — Indexes</a>.</p>
+      <p class="note">Only pages marked <code>publish: true</code> appear here. A private wiki run on
+        the same rules shows nothing on the web until its owner says so.</p>
+      <div class="grid">
+        {domains.map((d) => (
+          <a class="card" href={`${base}/wiki/${d.name}/`}>
+            <span class="n">{d.name}</span>
+            <span class="c">{d.count} {d.count === 1 ? "page" : "pages"}</span>
+          </a>
+        ))}
+      </div>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .shell { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); align-items: start; }
+  article { padding: 2.5rem 3rem 4.5rem; }
+  .note { font-size: 0.875rem; color: var(--fg-faint); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .card { display: flex; flex-direction: column; gap: 0.375rem; padding: 1.125rem 1.25rem;
+    border: 1px solid var(--rule); border-radius: 3px; background: var(--bg-raised);
+    text-decoration: none; font-family: var(--mono); }
+  .card:hover { border-color: var(--fg); }
+  .n { font-size: 1.0625rem; text-transform: capitalize; }
+  .c { font-size: 0.75rem; color: var(--fg-faint); }
+  @media (max-width: 860px) { .shell { grid-template-columns: minmax(0, 1fr); } article { padding: 2rem 1.5rem; } }
+</style>

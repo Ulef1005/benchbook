@@ -1,16 +1,8 @@
-name: Deploy site to GitHub Pages
-
-# Won't actually serve anything until this repo is public — GitHub Pages on a private repo
-# needs a paid plan. See docs/15-publishing.md. The workflow builds and (attempts to) deploy
-# regardless, so it's already proven correct the moment the repo flips public.
+name: Deploy wiki site
 
 on:
   push:
     branches: [main]
-    paths:
-      - "site/**"
-      - "wiki/**"
-      - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
 permissions:
@@ -19,20 +11,21 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-      - name: Install, build, and upload the site
-        uses: withastro/action@v6
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # required: last-updated reads git log per file
+      - uses: withastro/action@v3
         with:
           path: site
-
+          node-version: 20
+          package-manager: npm
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -40,6 +33,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+      - id: deployment
+        uses: actions/deploy-pages@v4

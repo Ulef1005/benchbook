@@ -1,10 +1,14 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+import remarkWikiLinks from "./plugins/remark-wiki-links.mjs";
 
-// GitHub Pages serves this repo at https://<username>.github.io/benchbook/ — `base` has to
-// match the repo name, or every internal link 404s. See docs/15-publishing.md.
-// https://astro.build/config
+// Project page: https://ulef1005.github.io/benchbook/
+// On a custom domain, drop `base` and set `site` to the domain.
 export default defineConfig({
-	site: 'https://ulef1005.github.io',
-	base: '/benchbook',
+  site: "https://ulef1005.github.io",
+  base: "/benchbook",
+  trailingSlash: "always",
+  markdown: {
+    remarkPlugins: [remarkWikiLinks],
+    shikiConfig: { theme: "vitesse-dark", wrap: true },
+  },
 });

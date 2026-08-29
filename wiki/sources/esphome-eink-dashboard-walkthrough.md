@@ -4,7 +4,7 @@ type: source
 created: 2026-08-12
 domain: knowledge
 subdomain: null
-publish: false
+publish: true
 tags: [tutorial, demo]
 sources: []
 source_url: "https://example.com/esphome-eink-walkthrough"

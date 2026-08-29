@@ -1,0 +1,41 @@
+---
+import Base from "./Base.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Backlinks from "../components/Backlinks.astro";
+import { wikiNav } from "../lib/nav";
+import type { WikiEntry } from "../lib/wiki";
+
+const { entry, backlinks = [] } = Astro.props as { entry: WikiEntry; backlinks: WikiEntry[] };
+const groups = await wikiNav();
+const d = entry.data;
+const chips = [d.domain, d.subdomain, d.status && `status: ${d.status}`, ...d.tags].filter(Boolean);
+---
+<Base title={d.title} section="wiki">
+  <div class="shell">
+    <Sidebar groups={groups} current={Astro.url.pathname} />
+    <article class="prose" data-pagefind-body>
+      <div class="badges">
+        <span class="type">{d.type}</span>
+        {chips.map((c) => <span class="chip">{c}</span>)}
+      </div>
+      <h1>{d.title}</h1>
+      <slot />
+    </article>
+    <Backlinks entry={entry} backlinks={backlinks} />
+  </div>
+</Base>
+
+<style>
+  .shell { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr) 268px; align-items: start; }
+  article { padding: 2.25rem 2.75rem 4.5rem; }
+  .badges { display: flex; gap: 0.625rem; flex-wrap: wrap; margin-bottom: 1rem;
+    font-family: var(--mono); font-size: 0.6875rem; }
+  .type { background: var(--neon); color: var(--graphite); font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; padding: 0.1875rem 0.5625rem; border-radius: var(--radius); }
+  .chip { border: 1px solid var(--rule); color: var(--fg-faint);
+    padding: 0.1875rem 0.5625rem; border-radius: var(--radius); }
+  article :global(h2) { font-size: 0.8125rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--fg-faint); margin-top: 2.25rem; }
+  @media (max-width: 1100px) { .shell { grid-template-columns: var(--sidebar) minmax(0, 1fr); } }
+  @media (max-width: 860px) { .shell { grid-template-columns: minmax(0, 1fr); } article { padding: 2rem 1.5rem 3.5rem; } }
+</style>

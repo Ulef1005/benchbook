@@ -1,0 +1,49 @@
+---
+import Base from "./Base.astro";
+import Sidebar from "../components/Sidebar.astro";
+import Toc from "../components/Toc.astro";
+import PageMeta from "../components/PageMeta.astro";
+import { docsNav } from "../lib/nav";
+
+const { title, crumbs = [], headings = [], repoPath, prev, next, section = "docs" } = Astro.props;
+const groups = await docsNav();
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+<Base title={title} section={section}>
+  <div class="shell">
+    <Sidebar groups={groups} current={Astro.url.pathname} />
+    <article class="prose" data-pagefind-body>
+      {crumbs.length > 0 && (
+        <div class="crumbs">{crumbs.map((c, i) => (<><span class:list={{ last: i === crumbs.length - 1 }}>{c}</span>{i < crumbs.length - 1 && <span class="sep">›</span>}</>))}</div>
+      )}
+      <slot name="title"><h1>{title}</h1></slot>
+      {repoPath && <PageMeta repoPath={repoPath} />}
+      <slot />
+      {(prev || next) && (
+        <nav class="pager">
+          {prev ? <a href={`${base}${prev.href}`} class="p"><span>← Previous</span><b>{prev.label}</b></a> : <span class="p" />}
+          {next && <a href={`${base}${next.href}`} class="p end"><span>Next →</span><b>{next.label}</b></a>}
+        </nav>
+      )}
+    </article>
+    <Toc headings={headings} />
+  </div>
+</Base>
+
+<style>
+  .shell { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr) var(--toc); align-items: start; }
+  article { padding: 2.5rem 3rem 4.5rem; }
+  .crumbs { display: flex; gap: 0.625rem; font-family: var(--mono); font-size: 0.6875rem;
+    color: var(--fg-faint); margin-bottom: 1.125rem; }
+  .crumbs .last { color: var(--fg); }
+  .crumbs .sep { color: var(--rule); }
+  .pager { display: flex; gap: 0.875rem; border-top: 1px solid var(--rule); padding-top: 1.375rem; margin-top: 3rem; }
+  .p { flex: 1; display: flex; flex-direction: column; gap: 0.3125rem;
+    border: 1px solid var(--rule); border-radius: var(--radius); padding: 0.875rem 1rem;
+    text-decoration: none; font-family: var(--mono); }
+  .p:hover { border-color: var(--fg); }
+  .p span { font-size: 0.6875rem; color: var(--fg-faint); }
+  .p b { font-size: 0.875rem; font-weight: 500; }
+  .p.end { text-align: right; }
+  @media (max-width: 860px) { .shell { grid-template-columns: minmax(0, 1fr); } article { padding: 2rem 1.5rem 3.5rem; } }
+</style>

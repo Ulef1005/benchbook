@@ -4,7 +4,7 @@ type: project
 created: 2026-07-30
 domain: projects
 subdomain: null
-publish: false
+publish: true
 status: abandoned
 tags: [demo]
 sources: []

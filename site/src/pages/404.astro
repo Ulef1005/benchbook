@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+<Base title="Not here">
+  <article class="wrap">
+    <div class="eyebrow">404</div>
+    <h1>Not here.</h1>
+    <p>This page may be <code>publish: false</code> — most of a benchbook wiki is. Try the
+      <a href={`${base}/wiki/`}>master index</a> or <a href={`${base}/docs/day-in-the-life/`}>the docs</a>.</p>
+  </article>
+</Base>
+
+<style>
+  .wrap { max-width: 60ch; margin: 0 auto; padding: 6rem 1.625rem; }
+</style>

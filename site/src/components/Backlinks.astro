@@ -1,0 +1,57 @@
+---
+import { href } from "../lib/wiki";
+import type { WikiEntry } from "../lib/wiki";
+const { entry, backlinks } = Astro.props as { entry: WikiEntry; backlinks: WikiEntry[] };
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const fm: [string, unknown][] = [
+  ["type", entry.data.type], ["created", entry.data.created.toISOString().slice(0, 10)],
+  ["domain", entry.data.domain ?? "null"], ["subdomain", entry.data.subdomain ?? "null"],
+  ["status", entry.data.status], ["publish", String(entry.data.publish)],
+  ["tags", entry.data.tags.join(", ")],
+];
+---
+<aside class="side">
+  <section>
+    <div class="eyebrow">Frontmatter</div>
+    <dl>
+      {fm.filter(([, v]) => v).map(([k, v]) => (<><dt>{k}</dt><dd>{v}</dd></>))}
+    </dl>
+  </section>
+
+  {entry.data.sources.length > 0 && (
+    <section>
+      <div class="eyebrow">Sources</div>
+      <ul>{entry.data.sources.map((s) => (
+        <li><a href={`${base}/wiki/sources/${s.replace(/\.md$/, "").split("/").pop()}/`}>{s}</a></li>
+      ))}</ul>
+    </section>
+  )}
+
+  {backlinks.length > 0 && (
+    <section>
+      <div class="eyebrow">Linked from</div>
+      <ul class="links">{backlinks.map((b) => (
+        <li>
+          <a href={`${base}${href(b)}`}>{b.data.title}</a>
+          <span>{[b.data.type, b.data.domain, b.data.status].filter(Boolean).join(" · ")}</span>
+        </li>
+      ))}</ul>
+    </section>
+  )}
+</aside>
+
+<style>
+  .side { border-left: 1px solid var(--rule); background: var(--bg-sunk);
+    padding: 2.125rem 1.25rem 2.5rem; font-family: var(--mono); font-size: 0.75rem;
+    display: flex; flex-direction: column; gap: 1.75rem;
+    position: sticky; top: 56px; max-height: calc(100vh - 56px); overflow-y: auto; }
+  .eyebrow { margin-bottom: 0.75rem; }
+  dl { display: grid; grid-template-columns: auto 1fr; gap: 0.5rem 0.75rem; margin: 0; }
+  dt { color: var(--fg-faint); }
+  dd { margin: 0; text-align: right; word-break: break-word; }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  a { text-decoration: none; border-bottom: 1px solid var(--neon); }
+  .links li { display: flex; flex-direction: column; gap: 0.1875rem; }
+  .links span { font-size: 0.65rem; color: var(--fg-faint); }
+  @media (max-width: 1100px) { .side { display: none; } }
+</style>

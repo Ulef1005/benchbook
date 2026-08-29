@@ -4,7 +4,7 @@ type: entity
 created: 2026-08-29
 domain: knowledge
 subdomain: null
-publish: false
+publish: true
 status: reference-only
 tags: [demo, validation-test]
 sources: ["mdns-workshop-note"]

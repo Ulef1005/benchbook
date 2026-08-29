@@ -4,7 +4,7 @@ type: reference
 created: 2026-08-21
 domain: home
 subdomain: computing
-publish: false
+publish: true
 tags: [guide, demo]
 sources: []
 ---

@@ -4,7 +4,7 @@ type: reference
 created: 2026-08-22
 domain: projects
 subdomain: null
-publish: false
+publish: true
 tags: [concept, demo]
 sources: []
 ---

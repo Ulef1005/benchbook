@@ -4,7 +4,7 @@ type: reference
 created: 2026-08-13
 domain: knowledge
 subdomain: null
-publish: false
+publish: true
 tags: [comparison, demo]
 sources: ["esphome-eink-dashboard-walkthrough"]
 ---

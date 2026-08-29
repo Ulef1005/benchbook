@@ -1,0 +1,28 @@
+---
+import { render } from "astro:content";
+import WikiLayout from "../../../layouts/WikiLayout.astro";
+import { publishedWiki, place, backlinkMap } from "../../../lib/wiki";
+
+export async function getStaticPaths() {
+  const pages = await publishedWiki();
+  const links = await backlinkMap();
+  return pages
+    .filter((p) => place(p.id).slug)
+    .map((entry) => {
+      const { domain, slug } = place(entry.id);
+      return {
+        params: { domain, slug },
+        props: { entry, backlinks: links.get(slug!) ?? [] },
+      };
+    });
+}
+
+const { entry, backlinks } = Astro.props;
+const { Content } = await render(entry);
+---
+<WikiLayout entry={entry} backlinks={backlinks}>
+  {/* data-pagefind-filter lets search results be narrowed by page type */}
+  <div data-pagefind-filter={`type:${entry.data.type}`} data-pagefind-meta={`domain:${entry.data.domain ?? "none"}`}>
+    <Content />
+  </div>
+</WikiLayout>

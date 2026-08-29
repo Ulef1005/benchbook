@@ -4,7 +4,7 @@ type: entity
 created: 2026-08-20
 domain: home
 subdomain: computing
-publish: false
+publish: true
 status: owned
 change_history: true
 tags: [demo]

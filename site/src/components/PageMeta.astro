@@ -1,0 +1,27 @@
+---
+import { lastUpdated, editUrl } from "../lib/git";
+const { repoPath } = Astro.props as { repoPath: string };
+const git = lastUpdated(repoPath);
+---
+{git && (
+  <div class="meta">
+    <span>Last updated <b>{git.date}</b></span>
+    <span class="sep">·</span>
+    <span>commit <b>{git.sha}</b></span>
+    <span class="links">
+      <a href={editUrl(repoPath)}>Edit on GitHub</a>
+      <a href={editUrl(repoPath).replace("/blob/", "/raw/")}>View source</a>
+    </span>
+  </div>
+)}
+
+<style>
+  .meta { display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap;
+    border: 1px solid var(--rule); border-radius: var(--radius); background: var(--bg-raised);
+    padding: 0.625rem 0.875rem; margin: 0 0 2.125rem;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--fg-muted); }
+  b { font-weight: 500; color: var(--fg); }
+  .sep { color: var(--rule); }
+  .links { margin-left: auto; display: flex; gap: 0.75rem; }
+  .links a { text-decoration: none; border-bottom: 1px solid var(--neon); }
+</style>

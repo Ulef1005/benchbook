@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from "astro:content";
+import DocsLayout from "../../layouts/DocsLayout.astro";
+
+export async function getStaticPaths() {
+  return (await getCollection("contract")).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const title = entry.data.title ?? `${entry.id}.md`;
+---
+<DocsLayout
+  title={title}
+  section="contract"
+  crumbs={["Contract", `${entry.id}.md`]}
+  headings={headings}
+  repoPath={`${entry.id}.md`}
+>
+  <Content />
+</DocsLayout>

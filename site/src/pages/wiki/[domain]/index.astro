@@ -1,0 +1,75 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Sidebar from "../../../components/Sidebar.astro";
+import TypeFilter from "../../../components/TypeFilter.astro";
+import { wikiNav } from "../../../lib/nav";
+import { publishedWiki, place, href } from "../../../lib/wiki";
+
+export async function getStaticPaths() {
+  const pages = await publishedWiki();
+  const domains = [...new Set(pages.map((p) => place(p.id).domain))].filter((d) => d && d !== "meta");
+  return domains.map((domain) => ({
+    params: { domain },
+    props: { entries: pages.filter((p) => place(p.id).domain === domain && place(p.id).slug) },
+  }));
+}
+
+const { domain } = Astro.params;
+const { entries } = Astro.props;
+const groups = await wikiNav();
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const types = [...new Set(entries.map((e) => e.data.type))];
+const order = ["source", "entity", "reference", "project", "overview", "person"];
+const sorted = [...entries].sort((a, b) =>
+  order.indexOf(a.data.type) - order.indexOf(b.data.type) || a.data.title.localeCompare(b.data.title));
+
+/** First sentence of the body, minus the heading — the index's retrieval signal. */
+function summary(body = "") {
+  const line = body.split("\n").map((l) => l.trim())
+    .find((l) => l && !l.startsWith("#") && !l.startsWith("---") && !l.startsWith("|"));
+  return (line ?? "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").slice(0, 180);
+}
+---
+<Base title={domain} section="wiki">
+  <div class="shell">
+    <Sidebar groups={groups} current={Astro.url.pathname} />
+    <article class="prose">
+      <div class="eyebrow">Domain index</div>
+      <h1 class="cap">{domain}</h1>
+      <p>Full catalogue for this domain. The one-line summary is the retrieval signal — it says what
+        the page is <em>for</em>, not what it's called.</p>
+      <TypeFilter types={types} />
+      <div class="rows">
+        {sorted.map((e) => (
+          <a class="row" data-entry-type={e.data.type} href={`${base}${href(e)}`}>
+            <span class="type">{e.data.type}</span>
+            <span class="body">
+              <span class="t">{e.data.title}</span>
+              <span class="s">{summary(e.body)}</span>
+            </span>
+          </a>
+        ))}
+      </div>
+      <p class="count" data-entry-count data-entry-count-template={`{n} of ${sorted.length} pages · publish: true only`}
+         set:text={`${sorted.length} of ${sorted.length} pages · publish: true only`} />
+    </article>
+  </div>
+</Base>
+
+<style>
+  .shell { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); align-items: start; }
+  article { padding: 2.5rem 3rem 4.5rem; max-width: 1040px; }
+  .cap { text-transform: capitalize; }
+  .rows { border-top: 1px solid var(--rule); }
+  .row { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 1.125rem;
+    padding: 1.125rem 0.25rem; border-bottom: 1px solid var(--rule);
+    align-items: baseline; text-decoration: none; }
+  .row:hover { background: var(--bg-raised); color: var(--fg); }
+  .type { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--neon); }
+  .body { display: flex; flex-direction: column; gap: 0.3125rem; }
+  .t { font-family: var(--mono); font-size: 1rem; letter-spacing: -0.01em; }
+  .s { font-size: 0.9rem; color: var(--fg-muted); }
+  .count { font-family: var(--mono); font-size: 0.72rem; color: var(--fg-faint); margin-top: 1.125rem; }
+  @media (max-width: 860px) { .shell { grid-template-columns: minmax(0, 1fr); } article { padding: 2rem 1.5rem; } }
+</style>

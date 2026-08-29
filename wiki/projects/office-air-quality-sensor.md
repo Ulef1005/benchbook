@@ -4,7 +4,7 @@ type: project
 created: 2026-08-28
 domain: projects
 subdomain: null
-publish: false
+publish: true
 status: planned
 tags: [demo]
 sources: []

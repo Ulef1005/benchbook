@@ -1,0 +1,35 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+const domains = await getCollection("domains");
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const name = (id: string) => id.split("/")[0];
+const installed = new Set(["knowledge", "home", "projects"]);
+---
+<Base title="Domains" section="domains">
+  <article class="prose page">
+    <div class="eyebrow">Packs</div>
+    <h1>Domains</h1>
+    <p>Top-level subject areas, shipped as installable packs — rules, skills and page types bundled
+      per subject. Three are installed by default; the rest are available.</p>
+    <div class="grid">
+      {domains.map((d) => (
+        <a class="card" href={`${base}/domains/${name(d.id)}/`}>
+          <span class="n">{name(d.id)}</span>
+          <span class="s">{installed.has(name(d.id)) ? "installed by default" : "available"}</span>
+        </a>
+      ))}
+    </div>
+  </article>
+</Base>
+
+<style>
+  .page { max-width: 900px; margin: 0 auto; padding: 3rem 1.625rem 4.5rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 2rem; }
+  .card { display: flex; flex-direction: column; gap: 0.375rem; padding: 1.125rem 1.25rem;
+    border: 1px solid var(--rule); border-radius: 3px; background: var(--bg-raised);
+    text-decoration: none; font-family: var(--mono); }
+  .card:hover { border-color: var(--fg); }
+  .n { font-size: 1.0625rem; text-transform: capitalize; }
+  .s { font-size: 0.72rem; color: var(--fg-faint); }
+</style>

@@ -1,0 +1,31 @@
+---
+const { groups, current } = Astro.props as {
+  groups: { group: string; items: { label: string; href: string }[] }[];
+  current?: string;
+};
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const norm = (h: string) => (h.startsWith(base) ? h : base + h);
+---
+<aside class="sidebar">
+  {groups.map((g) => (
+    <div class="group">
+      <div class="eyebrow">{g.group}</div>
+      {g.items.map((it) => (
+        <a href={norm(it.href)} class:list={["item", { current: current && norm(it.href) === norm(current) }]}>{it.label}</a>
+      ))}
+    </div>
+  ))}
+</aside>
+
+<style>
+  .sidebar { border-right: 1px solid var(--rule); background: var(--bg-sunk);
+    padding: 1.5rem 1.125rem 2.5rem; font-family: var(--mono); font-size: 0.78rem;
+    position: sticky; top: 56px; max-height: calc(100vh - 56px); overflow-y: auto; }
+  .group { margin-bottom: 1.375rem; display: flex; flex-direction: column; gap: 0.1875rem; }
+  .group .eyebrow { margin-bottom: 0.375rem; }
+  .item { display: block; padding: 0.25rem 0.5rem; border-left: 2px solid transparent;
+    color: var(--fg-faint); text-decoration: none; border-radius: var(--radius); }
+  .item:hover { color: var(--fg); }
+  .item.current { color: var(--fg); border-left-color: var(--neon); background: var(--bg-raised); }
+  @media (max-width: 860px) { .sidebar { display: none; } }
+</style>

@@ -4,7 +4,7 @@ type: project
 created: 2026-08-14
 domain: projects
 subdomain: null
-publish: false
+publish: true
 status: completed
 tags: [demo]
 sources: ["esphome-eink-dashboard-walkthrough"]

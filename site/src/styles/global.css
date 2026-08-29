@@ -1,0 +1,82 @@
+/* benchbook — the site's only stylesheet. Tokens from design/README.md. */
+:root {
+  --graphite: #21201C;
+  --paper: #F5F1E8;
+  --neon: #FF3DBE;
+
+  --bg: var(--paper);
+  --bg-sunk: #F2EEE3;
+  --bg-raised: #FBF9F3;
+  --fg: var(--graphite);
+  --fg-muted: #4A463E;
+  --fg-faint: #8A8377;
+  --rule: #E2DCCC;
+  --code-bg: #EAE4D5;
+
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sans: "IBM Plex Sans", system-ui, sans-serif;
+  --radius: 2px;
+  --measure: 74ch;
+  --sidebar: 236px;
+  --toc: 200px;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: var(--graphite);
+  --bg-sunk: #1C1B18;
+  --bg-raised: #26251F;
+  --fg: var(--paper);
+  --fg-muted: #D6D0C2;
+  --fg-faint: #8A8377;
+  --rule: #34322C;
+  --code-bg: #2B2A25;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--graphite); --bg-sunk: #1C1B18; --bg-raised: #26251F;
+    --fg: var(--paper); --fg-muted: #D6D0C2; --fg-faint: #8A8377;
+    --rule: #34322C; --code-bg: #2B2A25; color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font-family: var(--sans); font-size: 16px; line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--neon); color: #fff; }
+a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--neon); text-underline-offset: 3px; }
+a:hover { color: var(--neon); }
+:focus-visible { outline: 2px solid var(--neon); outline-offset: 2px; }
+
+/* Headings, wordmark and metadata are mono; body copy is sans — mono at 16px
+   over a 14-doc reference set reads badly. Everything else follows design/README.md. */
+h1, h2, h3, h4 { font-family: var(--mono); font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+h1 { font-size: 2.375rem; margin: 0 0 0.875rem; }
+h2 { font-size: 1.5rem; margin: 2.5rem 0 0.875rem; }
+h3 { font-size: 1.125rem; margin: 2rem 0 0.625rem; }
+p, li { text-wrap: pretty; }
+p { margin: 0 0 1.125rem; }
+strong { font-weight: 600; }
+code { font-family: var(--mono); font-size: 0.9em; background: var(--code-bg); padding: 1px 5px; border-radius: var(--radius); }
+pre { background: var(--graphite); color: var(--paper); padding: 1.125rem 1.25rem; border-radius: 3px; overflow-x: auto; font-size: 0.8rem; }
+pre code { background: none; padding: 0; }
+blockquote { margin: 0 0 1.625rem; padding: 0.25rem 0 0.25rem 1.125rem; border-left: 2px solid var(--neon); font-family: var(--mono); font-size: 0.95rem; }
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0 0 2rem; }
+th { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.08em; text-transform: uppercase;
+     color: var(--fg-muted); background: var(--bg-sunk); text-align: left; }
+th, td { padding: 0.625rem 0.875rem; border-top: 1px solid var(--rule); vertical-align: top; }
+img { max-width: 100%; height: auto; }
+
+.mono { font-family: var(--mono); }
+.eyebrow { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-faint); }
+.prose { max-width: var(--measure); }
+.prose > :first-child { margin-top: 0; }
+
+@media (max-width: 1100px) { :root { --toc: 0px; } }
