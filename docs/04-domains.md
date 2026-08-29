@@ -38,7 +38,7 @@ the live wiki those are:
 | `books` | Reading — books, authors, series, to-read candidates |
 | `cooking` | Recipes and meal planning |
 | `sports` | Training and gear, split by sport |
-| `gaming` | Games, split per game |
+| `gaming` | Computer and console games — played, backlog, dropped |
 | `music` | Instruments and music gear |
 | `wisdom` | Durable non-technical insight worth keeping |
 
@@ -110,6 +110,7 @@ Bundling them means adopting a subject area is one decision instead of six.
 | `projects` *(installed)* | — core skills cover it | no |
 | `books` | `book-capture` | **yes** — author, series, candidate types |
 | `cooking` | `recipe-capture` | **yes** — recipe type |
+| `gaming` | `game-capture`, `game-drop` | **yes** — game, franchise types |
 
 **The three installed packs are the minimum coherent set**, not an arbitrary starter. The
 Entity Placement Rule sends humans to `people/`, general things to `knowledge/entities/`, and
@@ -125,9 +126,16 @@ file. By hand it's the same list; `domains/README.md` spells it out.
 Uninstalling is the reverse. Nothing is entangled: a pack absent from the dispatch table is
 never loaded.
 
-The two packs that **extend the schema** are worth reading even if you don't want them —
-they're the proof that a domain may add page types when the core four genuinely can't hold
-something, and both carry rules that changed because measuring them proved them wrong.
+The three packs that **extend the schema** — books, cooking, gaming — are worth reading even
+if you don't want them. They're the proof that a domain may add page types when the core four
+genuinely can't hold something, and each carries a rule that changed because measuring it
+proved it wrong.
+
+They also show the *reasoning* being copied rather than the structure: gaming looks like it
+should be a reskin of books (author→studio, series→franchise, candidate→wishlist) and
+deliberately isn't. Books has no page per read book because 350 rows carry the same
+information; games get a page each because there are fewer and there's more to say. Same
+principle, opposite conclusion.
 
 ---
 

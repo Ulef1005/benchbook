@@ -229,10 +229,12 @@ stop editing them. Their value comes from being identical across every service.
 
 ### And two more, in the inert packs
 
-`book-capture` (books) and `recipe-capture` (cooking) ship with packs that aren't installed by
-default. Both are worth a skim even if you don't want the domain — `book-capture` shows a
-collision check that runs *before* anything is filed, and `recipe-capture` shows a skill that
-produces two co-dependent files and validates one of them against an external tool.
+`book-capture` (books), `recipe-capture` (cooking), and `game-capture` + `game-drop` (gaming)
+ship with packs that aren't installed by default. Worth a skim even if you don't want the
+domain — `book-capture` shows a collision check that runs *before* anything is filed,
+`recipe-capture` produces two co-dependent files and validates one against an external tool,
+and **`game-drop` captures the moment you *stop*** rather than the moment you acquire, which is
+the higher-value moment and the one nobody ever writes up unaided.
 
 ---
 

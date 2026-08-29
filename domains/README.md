@@ -24,6 +24,7 @@ adopting a subject area is one decision instead of six.
 | [projects](projects/) | What you're building, planning, or tracking | — (core skills cover it) | no |
 | [books](books/) | Reading — what you've read, what you might read, and why | `book-capture` | **yes** — adds author, series, candidate page types |
 | [cooking](cooking/) | Recipes and meal planning | `recipe-capture` | **yes** — adds the recipe page type |
+| [gaming](gaming/) | Computer and console games — played, playing, backlog, dropped | `game-capture`, `game-drop` | **yes** — adds game and franchise page types |
 
 **knowledge**, **home** and **projects** are installed by default. The rest are available and
 inert until you install them.
