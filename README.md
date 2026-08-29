@@ -4,11 +4,10 @@
 
 <p align="center"><strong>Your AI keeps the wiki. You keep the rules.</strong></p>
 
-**TL;DR:** benchbook is a plain-markdown wiki, versioned in git, that an AI agent reads and
-writes under a written contract — rules for what it may create, what it must ask about, and
-what it can never touch. Point it at a raw source and it produces structured, cross-linked
-pages instead of a chat transcript you'll never find again. Works with any agentic tool that
-can read and write files in a repo, not just one assistant.
+*TL;DR: benchbook is a plain-markdown wiki, versioned in git, that an AI agent reads and
+writes under a written contract — what it may create, what it must ask about, what it can
+never touch. Works with any agentic tool that can read and write files in a repo, not just
+one assistant.*
 
 You build something with an LLM on a Tuesday. It works. Three months later you open the
 folder and have no idea why you chose that library, what the two rejected approaches were,
