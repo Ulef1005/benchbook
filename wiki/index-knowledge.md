@@ -20,11 +20,13 @@ options." Writing these lazily is the main way index-based retrieval fails.
 ### Sources
 
 - [ESPHome E-Ink Dashboard Walkthrough](sources/esphome-eink-dashboard-walkthrough.md) — build walkthrough for a battery e-ink panel; the useful part is the power-budget mistakes *(demo)*
+- [mDNS Workshop Note](sources/mdns-workshop-note.md) — how mDNS/DNS-SD auto-discovery works and why it silently breaks across VLANs *(validation-test, safe to remove)*
 
 ### Entities
 
 - [ESPHome](knowledge/entities/esphome.md) — YAML-to-firmware generator for ESP32/ESP8266; OTA is the feature that matters, and some display drivers silently block deep sleep *(demo)*
 - [ESP32-C6](knowledge/entities/esp32-c6.md) — RISC-V microcontroller; picked over the C3 on deep-sleep current, which is the number that decides battery life *(demo)*
+- [mDNS](knowledge/entities/mdns.md) — local-network name/service discovery protocol; the page to check when a device "disappears" after a VLAN move *(validation-test, safe to remove)*
 
 ### References
 

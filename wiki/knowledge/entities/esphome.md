@@ -7,7 +7,7 @@ subdomain: null
 publish: false
 status: reference-only
 tags: [demo]
-sources: ["esphome-eink-dashboard-walkthrough"]
+sources: ["esphome-eink-dashboard-walkthrough", "mdns-workshop-note"]
 repo_url: "https://github.com/esphome/esphome"
 ---
 
@@ -26,6 +26,7 @@ mounted on a wall stays updatable.
 |---|---|---|
 | ESPHome | `runs_on` | [ESP32-C6](esp32-c6.md) |
 | ESPHome | `enables` | OTA firmware updates |
+| ESPHome | `uses` | [mDNS](mdns.md) |
 | [hallway-display](../../home/entities/hallway-display.md) | `uses` | ESPHome |
 
 ## Key Facts
@@ -51,3 +52,4 @@ maintenance — a YAML file you can read in two years beats C you'd have to re-u
 ## Sources
 
 - [ESPHome E-Ink Dashboard Walkthrough](../../sources/esphome-eink-dashboard-walkthrough.md)
+- [mDNS Workshop Note](../../sources/mdns-workshop-note.md)

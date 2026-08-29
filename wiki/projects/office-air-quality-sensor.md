@@ -55,14 +55,21 @@ plan approval gate — see [09 — Projects](../../docs/09-projects.md).
 
 ## Open Questions
 
-- [ ] **NDIR or eCO₂?** Decides the cost and the enclosure. Needs an answer on whether eCO₂
-      drift is tolerable for a "should I open a window" signal, or whether misreads on cleaning
-      products would train everyone to ignore it.
+- [x] **NDIR or eCO₂?** → **NDIR** (validation-test decision, 2026-08-29) — an estimate that
+      misreads on cleaning products fails the one job this sensor has; the ~€23 premium over
+      eCO₂ buys a reading worth trusting.
 - [ ] Mains or battery? Mains is easy here, which removes the constraint that shaped the
       hallway build — worth not copying that design out of habit.
 - [ ] Where does the reading go — a small display, an existing dashboard, or a notification?
 
 ## Log
+
+### [2026-08-29] Sensor choice closed — NDIR (validation test)
+
+Closed as part of an end-to-end workflow validation pass — not a real decision, safe to
+revert. Demonstrates the wiki-project-open "close an open question" action: `[ ]` → `[x]`,
+decision recorded inline, `## Hard- and Software` still says "Selected: TBD" and was
+deliberately left unsynced to check whether LINT's contradiction-detection catches it.
 
 ### [2026-08-28] Project created, plan gated
 
