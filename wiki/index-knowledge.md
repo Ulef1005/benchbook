@@ -28,4 +28,4 @@ options." Writing these lazily is the main way index-based retrieval fails.
 
 ### References
 
-*(empty — references need 4+ compared entities and human approval)*
+- [Low-Power ESP32 Boards Compared](knowledge/references/low-power-esp32-boards.md) — four variants on deep-sleep current, the number that decides battery life; a snapshot, so prefer entity pages where you can *(demo)*

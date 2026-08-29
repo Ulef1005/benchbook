@@ -31,8 +31,8 @@ Full catalogue for the projects domain, grouped by status.
 
 ### Abandoned
 
-*(empty — abandoned projects keep their full plan. Nothing is deleted.)*
+- [kitchen-tablet-dashboard](projects/abandoned/kitchen-tablet-dashboard.md) — wall-mounted tablet as a hallway dashboard. **Abandoned 2026-08-10**: no power socket in reach, the screen is a light source at night, and a permanently-charging tablet degrades. Superseded by the e-ink build *(demo)*
 
 ### References
 
-*(empty — notes and decisions supporting multiple projects)*
+- [Build Decision Log](projects/references/build-decision-log.md) — standing decisions that bind more than one build: measure before enclosing, "already owned" is not free, pin firmware on anything hard to reach *(demo)*

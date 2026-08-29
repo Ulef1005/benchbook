@@ -26,4 +26,4 @@ instance of it lives here, and the two link to each other.
 
 ### References
 
-*(empty — references need 4+ compared entities and human approval)*
+- [Battery Build Checklist](home/references/battery-build-checklist.md) — the steps that decide months vs days of battery life; two of them learned the expensive way *(demo)*

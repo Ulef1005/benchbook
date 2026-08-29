@@ -8,6 +8,7 @@ publish: false
 tags: [tutorial, demo]
 sources: []
 source_url: "https://example.com/esphome-eink-walkthrough"
+raw_file: "raw/esphome-eink-walkthrough.md"
 channel: example-maker-channel
 ---
 

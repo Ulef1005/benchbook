@@ -20,7 +20,10 @@ index. That two-step is what keeps retrieval cost flat as the wiki grows. See
 
 ## People
 
-*(No people pages yet. `wiki/people/` is humans only.)*
+- [Alex](people/alex-demo.md) — synthetic example showing the shape of a person page *(demo)*
+
+`wiki/people/` is humans only. Software personas, channels, brands and products go to
+`knowledge/entities/` or a domain's own `entities/`.
 
 ## Domain Indexes
 
