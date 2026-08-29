@@ -1,9 +1,5 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/readme-banner-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="assets/readme-banner-light.png">
-    <img src="assets/readme-banner-light.png" alt="benchbook" width="100%">
-  </picture>
+  <img src="assets/readme-banner-light.png" alt="benchbook" width="100%">
 </p>
 
 <p align="center"><strong>Your AI keeps the wiki. You keep the rules.</strong></p>
