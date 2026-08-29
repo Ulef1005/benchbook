@@ -33,4 +33,23 @@ entity state changes belong in that entity's `## Change History`. See
 ## [2026-08-29] create | Wiki scaffold
 
 Initial structure created from the benchbook starter: contract, satellites, folder tree,
-index/log/overview/todo stubs. Domains: knowledge, projects.
+index/log/overview/todo stubs. Domains: knowledge, home, projects.
+
+## [2026-08-12] ingest | ESPHome E-Ink Dashboard Walkthrough
+
+Source page plus two knowledge entities (ESPHome, ESP32-C6). Power-budget takeaways fed the
+hallway display build. *(demo content)*
+
+## [2026-08-14] create | Hallway Display Build
+
+Project page created, options table filled, plan approved. C3 ruled out on sleep current
+before anything was bought. *(demo content)*
+
+## [2026-08-20] create | Hallway Display
+
+Operational entity created as the build's final phase; project moved to `completed/`.
+*(demo content)*
+
+## [2026-08-28] create | Office Air Quality Sensor
+
+Project created with a gated plan. Sensor choice blocks everything. *(demo content)*

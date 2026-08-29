@@ -183,7 +183,8 @@ git clone https://github.com/Ulef1005/benchbook.git my-wiki && cd my-wiki
 Then:
 
 1. **Read `agents-core.md`** — it's the contract. It's meant to be edited; it's yours now.
-2. **Delete the demo content** in `wiki/` once you've looked at it, keeping the folder shape.
+2. **Look at the demo content**, then delete it. `wiki/DEMO.md` says what each page
+   demonstrates and gives you the one-line removal command. Keep the folder shape.
 3. **Live on the three installed domains for a while.** `knowledge`, `home` and `projects` are
    the minimum set that makes the placement rules work. Add a fourth when you reach for it and
    it isn't there.

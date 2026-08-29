@@ -19,11 +19,12 @@ options." Writing these lazily is the main way index-based retrieval fails.
 
 ### Sources
 
-*(empty — your first ingest fills this)*
+- [ESPHome E-Ink Dashboard Walkthrough](sources/esphome-eink-dashboard-walkthrough.md) — build walkthrough for a battery e-ink panel; the useful part is the power-budget mistakes *(demo)*
 
 ### Entities
 
-*(empty)*
+- [ESPHome](knowledge/entities/esphome.md) — YAML-to-firmware generator for ESP32/ESP8266; OTA is the feature that matters, and some display drivers silently block deep sleep *(demo)*
+- [ESP32-C6](knowledge/entities/esp32-c6.md) — RISC-V microcontroller; picked over the C3 on deep-sleep current, which is the number that decides battery life *(demo)*
 
 ### References
 

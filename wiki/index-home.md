@@ -22,7 +22,7 @@ instance of it lives here, and the two link to each other.
 
 ### Entities
 
-*(empty — the owned/considered/referenced checkpoint decides what lands here)*
+- [Hallway Display](home/entities/hallway-display.md) — battery e-ink panel by the front door; firmware **pinned** after an upgrade raised sleep current 30× *(demo)*
 
 ### References
 

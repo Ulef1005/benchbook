@@ -19,7 +19,7 @@ Full catalogue for the projects domain, grouped by status.
 
 ### Planned
 
-*(empty)*
+- [office-air-quality-sensor](projects/office-air-quality-sensor.md) — CO₂ sensor for the office; NDIR-vs-eCO₂ is the blocking decision. **Plan gated, no work started** *(demo)*
 
 ### On Hold
 
@@ -27,7 +27,7 @@ Full catalogue for the projects domain, grouped by status.
 
 ### Completed
 
-*(empty)*
+- [hallway-display-build](projects/completed/hallway-display-build.md) — battery e-ink hallway panel, ~5 months per charge; build record, now operated via [hallway-display](home/entities/hallway-display.md) *(demo)*
 
 ### Abandoned
 
