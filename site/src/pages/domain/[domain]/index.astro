@@ -1,0 +1,34 @@
+---
+import Base from '../../../layouts/Base.astro';
+import { loadAllPages } from '../../../lib/wiki.js';
+
+export function getStaticPaths() {
+	const pages = loadAllPages({ includeUnpublished: import.meta.env.PUBLIC_DEMO_MODE === 'true' });
+	const domains = [...new Set(pages.map((p) => p.data.domain).filter(Boolean))];
+	return domains.map((domain) => ({
+		params: { domain },
+		props: {
+			pages: pages
+				.filter((p) => p.data.domain === domain)
+				.sort((a, b) => (a.data.title ?? '').localeCompare(b.data.title ?? '')),
+		},
+	}));
+}
+
+const { domain } = Astro.params;
+const { pages } = Astro.props;
+---
+
+<Base title={domain}>
+	<p><a href="/benchbook/">← Home</a></p>
+	<h1>{domain}</h1>
+
+	<ul>
+		{pages.map((page) => (
+			<li>
+				<a href={`/benchbook/page/${page.slug}`}>{page.data.title ?? page.slug}</a>
+				{page.data.type ? <em> ({page.data.type})</em> : null}
+			</li>
+		))}
+	</ul>
+</Base>

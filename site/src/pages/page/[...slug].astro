@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { loadAllPages, renderBody } from '../../lib/wiki.js';
+
+export function getStaticPaths() {
+	const pages = loadAllPages({ includeUnpublished: import.meta.env.PUBLIC_DEMO_MODE === 'true' });
+	return pages.map((page) => ({
+		params: { slug: page.slug },
+		props: { page },
+	}));
+}
+
+const { page } = Astro.props;
+const html = renderBody(page.content, page.slug);
+---
+
+<Base title={page.data.title}>
+	<p>
+		{page.data.domain ? <a href={`/benchbook/domain/${page.data.domain}/`}>← {page.data.domain}</a> : <a href="/benchbook/">← Home</a>}
+	</p>
+	<h1>{page.data.title ?? page.slug}</h1>
+	{page.data.type ? <p><em>{page.data.type}</em></p> : null}
+
+	<div set:html={html} />
+</Base>

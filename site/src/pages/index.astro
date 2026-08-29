@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import { loadAllPages, domainCounts } from '../lib/wiki.js';
+
+const pages = loadAllPages({ includeUnpublished: import.meta.env.PUBLIC_DEMO_MODE === 'true' });
+const domains = domainCounts(pages);
+---
+
+<Base>
+	<h1>benchbook</h1>
+	<p>A demo wiki, rendered from the actual <code>wiki/</code> folder in this repo.</p>
+
+	<ul>
+		{domains.map(([domain, count]) => (
+			<li>
+				<a href={`/benchbook/domain/${domain}/`}>{domain}</a> — {count} page{count === 1 ? '' : 's'}
+			</li>
+		))}
+	</ul>
+</Base>
