@@ -223,6 +223,7 @@ reference material behind it.
 | [12 — Case Studies](docs/12-case-studies.md) | The four builds above, in detail |
 | [13 — Privacy](docs/13-privacy.md) | `publish: false`, and sanitising a personal wiki before sharing |
 | [14 — Limits](docs/14-limits.md) | What it's bad at, honestly |
+| [15 — Publishing](docs/15-publishing.md) | Turning the wiki into a website — design before tooling, and why GitHub Pages is the default recommendation |
 
 ---
 

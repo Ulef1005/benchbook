@@ -121,3 +121,6 @@ in the loop. The approval gates are load-bearing, not training wheels — see
 **Next:** [A Day in the Life](day-in-the-life.md) — three worked examples showing all of the
 above actually running. Or go straight to [02 — The Contract](02-the-contract.md) for the
 mechanism.
+
+Want the wiki itself readable somewhere other than a git client — a phone, a kitchen display?
+See [15 — Publishing](15-publishing.md).
