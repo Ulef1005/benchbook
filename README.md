@@ -4,6 +4,8 @@
 
 <p align="center"><strong>Your AI keeps the wiki. You keep the rules.</strong></p>
 
+<p align="center"><a href="https://ulef1005.github.io/benchbook/">ulef1005.github.io/benchbook</a> — docs, demo wiki, and the contract, rendered</p>
+
 *TL;DR: benchbook is a plain-markdown wiki, versioned in git, that an AI agent reads and
 writes under a written contract — what it may create, what it must ask about, what it can
 never touch. Works with any agentic tool that can read and write files in a repo, not just
