@@ -6,10 +6,13 @@
 
 <p align="center"><a href="https://ulef1005.github.io/benchbook/">ulef1005.github.io/benchbook</a> — docs, demo wiki, and the contract, rendered</p>
 
-*TL;DR: benchbook is a plain-markdown wiki, versioned in git, that an AI agent reads and
-writes under a written contract — what it may create, what it must ask about, what it can
-never touch. Works with any agentic tool that can read and write files in a repo, not just
-one assistant.*
+*TL;DR: benchbook is a personal AI-maintained wiki system. The core idea: you work with an AI agent on projects, and instead of losing the reasoning behind decisions, the agent files it into a structured markdown wiki — under a written contract that governs what it may write, what it must ask you about, and what it can never touch.
+
+The three key problems it solves:
+
+Reasoning decay — code survives, but why you made a decision doesn't. benchbook captures rejected alternatives, the reasoning, and the context alongside the artifact.
+Wiki abandonment — humans stop maintaining wikis because it's tedious. An AI doesn't get bored, so maintenance cost drops to near zero.
+Wiki bloat — the counterintuitive failure mode: when maintenance is free, you get too much content. A significant chunk of the contract exists to make the agent write less.*
 
 You build something with an LLM on a Tuesday. It works. Three months later you open the
 folder and have no idea why you chose that library, what the two rejected approaches were,
