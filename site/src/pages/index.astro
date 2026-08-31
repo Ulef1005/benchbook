@@ -6,9 +6,9 @@ const examples = [
   { kicker: "Ingest", title: "You saw a funky ESP32 project and want to build it",
     body: "The video becomes a source page with the transcript embedded. The build becomes a separate project page — and nothing gets written until you've approved a plan.", cmd: "/wiki-ingest" },
   { kicker: "Decide", title: "You want a self-hosted bot, but don't know which repo",
-    body: "Research four candidates, record why the most popular one lost, then deploy with seven boring integration steps pre-filled and unticked.", cmd: "/project-open" },
+    body: "Research four candidates, record why the most popular one lost, then deploy with seven boring integration steps pre-filled and unticked.", cmd: "/wiki-project-start" },
   { kicker: "Learn", title: "You want to learn to fly FPV drones",
-    body: "A learning path with gates between phases, a price baseline before you shop, and every gear option you rejected, with your reasoning, dated.", cmd: "/project-open" },
+    body: "A learning path with gates between phases, a price baseline before you shop, and every gear option you rejected, with your reasoning, dated.", cmd: "/wiki-project-start" },
 ];
 
 const recall = [
@@ -16,15 +16,25 @@ const recall = [
   { q: "When, and what since?", a: "Dated, in git, with a change history on anything whose state actually moves." },
   { q: "Why that way?", a: "Including the options you considered and dropped, and what ruled each one out." },
 ];
+
+const problems = [
+  { n: "01", t: "Reasoning decay",
+    body: "Code survives, but why you made a decision doesn't. benchbook captures the rejected alternatives, the reasoning, and the context alongside the artifact." },
+  { n: "02", t: "Wiki abandonment",
+    body: "Humans stop maintaining wikis because it's tedious. An AI doesn't get bored, so the maintenance cost drops to near zero." },
+  { n: "03", t: "Wiki bloat",
+    body: "The counterintuitive failure mode: when maintenance is free, you get too much content. A significant chunk of the contract exists to make the agent write" },
+];
 ---
 <Base title="benchbook">
   <section class="hero">
     <div>
       <div class="eyebrow">A markdown wiki, in git, kept by an agent</div>
       <h1>Your AI keeps the wiki.<br /><span>You keep the rules.</span></h1>
-      <p class="lead">The code survives. The reasoning doesn't. benchbook is a plain markdown wiki
-        maintained by an AI agent under a written contract — a file it reads at every session start
-        that says what it may create, what it must ask about, and what it may never touch.</p>
+      <p class="lead">You work with an AI agent on projects, and instead of losing the reasoning
+        behind your decisions, the agent files it into a structured markdown wiki — under a written
+        contract that governs what it may write, what it must ask you about, and what it can never
+        touch.</p>
       <div class="cta">
         <a class="primary" href={`${base}/docs/day-in-the-life/`}>Read the docs →</a>
         <a class="secondary" href={`${base}/wiki/`}>Browse the demo wiki</a>
@@ -47,7 +57,7 @@ const recall = [
 
   <section class="band">
     <h2>See it work</h2>
-    <p class="sub">Three ordinary tasks, walked step by step in
+    <p class="sub">Three ordinary tasks, walked step by step in{" "}
       <a href={`${base}/docs/day-in-the-life/`}>A Day in the Life</a>.</p>
     <div class="cards">
       {examples.map((ex) => (
@@ -62,6 +72,23 @@ const recall = [
   </section>
 
   <section class="band">
+    <h2>The three problems it solves</h2>
+    <p class="sub">Two of them only show up after the wiki exists.</p>
+    <div class="problems">
+      {problems.map((p) => (
+        <div class="problem">
+          <span class="n">{p.n}</span>
+          <div>
+            <h3>{p.t}</h3>
+            <p>{p.body}{p.n === "03" ? <> <em>less</em>.</> : null}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="eyebrow">Problem 01, in practice</div>
     <p class="quote">“Why did I pick that library three months ago?”</p>
     <div class="recall">
       {recall.map((r) => (<div><b>{r.q}</b><span>{r.a}</span></div>))}
@@ -117,6 +144,17 @@ const recall = [
   .card .b { font-size: 0.875rem; color: var(--fg-muted); }
   .card .cmd { font-family: var(--mono); font-size: 0.75rem; color: var(--fg-faint); margin-top: auto; }
 
+  .problems { display: flex; flex-direction: column; }
+  .problem { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: 1.5rem;
+    padding: 1.5rem 0; border-top: 1px solid var(--rule); }
+  .problem:last-child { border-bottom: 1px solid var(--rule); }
+  .problem .n { font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.12em;
+    color: var(--fg-faint); padding-top: 0.3rem; }
+  .problem h3 { margin: 0 0 0.5rem; font-size: 1.0625rem; }
+  .problem p { margin: 0; font-size: 0.9375rem; color: var(--fg-muted); max-width: 74ch; }
+  .problem em { font-style: normal; color: var(--neon); }
+
+  .band .eyebrow { margin-bottom: 0.875rem; }
   .quote { font-family: var(--mono); font-size: 1.625rem; font-weight: 500;
     letter-spacing: -0.02em; line-height: 1.35; max-width: 30ch; margin: 0 0 2.125rem; }
   .recall { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
@@ -133,6 +171,7 @@ const recall = [
 
   @media (max-width: 900px) {
     .hero, .cards, .recall { grid-template-columns: minmax(0, 1fr); }
+    .problem { grid-template-columns: 2.5rem minmax(0, 1fr); gap: 1rem; }
     h1 { font-size: 2.5rem; }
   }
 </style>
