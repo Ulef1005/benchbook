@@ -18,11 +18,11 @@ const recall = [
 ];
 
 const problems = [
-  { n: "01", t: "Reasoning decay",
+  { n: "01", t: "Reasoning decay", href: "/docs/01-concept/#the-actual-problem", more: "The concept",
     body: "Code survives, but why you made a decision doesn't. benchbook captures the rejected alternatives, the reasoning, and the context alongside the artifact." },
-  { n: "02", t: "Wiki abandonment",
+  { n: "02", t: "Wiki abandonment", href: "/docs/01-concept/#why-the-obvious-solutions-dont-hold", more: "Why the obvious fixes don't hold",
     body: "Humans stop maintaining wikis because it's tedious. An AI doesn't get bored, so the maintenance cost drops to near zero." },
-  { n: "03", t: "Wiki bloat",
+  { n: "03", t: "Wiki bloat", href: "/docs/11-keeping-it-honest/", more: "Keeping it honest",
     body: "The counterintuitive failure mode: when maintenance is free, you get too much content. A significant chunk of the contract exists to make the agent write" },
 ];
 ---
@@ -81,6 +81,7 @@ const problems = [
           <div>
             <h3>{p.t}</h3>
             <p>{p.body}{p.n === "03" ? <> <em>less</em>.</> : null}</p>
+            <a class="more" href={`${base}${p.href}`}>{p.more} →</a>
           </div>
         </div>
       ))}
@@ -153,6 +154,9 @@ const problems = [
   .problem h3 { margin: 0 0 0.5rem; font-size: 1.0625rem; }
   .problem p { margin: 0; font-size: 0.9375rem; color: var(--fg-muted); max-width: 74ch; }
   .problem em { font-style: normal; color: var(--neon); }
+  .problem .more { display: inline-block; margin-top: 0.75rem; font-family: var(--mono);
+    font-size: 0.75rem; color: var(--fg-faint); text-decoration: none; }
+  .problem .more:hover { color: var(--neon); }
 
   .band .eyebrow { margin-bottom: 0.875rem; }
   .quote { font-family: var(--mono); font-size: 1.625rem; font-weight: 500;

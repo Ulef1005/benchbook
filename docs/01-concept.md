@@ -25,13 +25,17 @@ The cost isn't nostalgia. It's that you re-litigate settled decisions, re-try ap
 already rejected for good reasons, and slowly lose the confidence to change anything, because
 you can't tell which parts of the design were deliberate and which were accidents.
 
+Call this one **reasoning decay**. It's the problem benchbook exists for — but it isn't the
+only one you hit, and the other two only show up *after* you have a wiki. They're named as
+they arrive below.
+
 ---
 
 ## Why the obvious solutions don't hold
 
-**"Just write it down."** Everyone knows this. Nobody sustains it. The maintenance burden of a
-hand-written wiki grows faster than its value, which is why personal wikis are abandoned at a
-roughly 100% rate. The bookkeeping — updating cross-references, revising a summary because a
+**"Just write it down."** Everyone knows this. Nobody sustains it — call this second problem
+**wiki abandonment**. The maintenance burden of a hand-written wiki grows faster than its
+value, which is why personal wikis are abandoned at a roughly 100% rate. The bookkeeping — updating cross-references, revising a summary because a
 newer source contradicts it, keeping an index current — is exactly the work humans won't do
 and won't miss doing.
 
@@ -82,6 +86,23 @@ reading, and team knowledge. **Tracking things you are building is a different s
 tracking things you are learning: it has state, it has a lifecycle, and its most valuable
 content is the decision record — including the approaches that were considered and dropped,
 which is precisely the thing nothing else captures.
+
+---
+
+## The third problem, which the fix creates
+
+An agent doesn't get bored, so wiki abandonment stops being the binding constraint — and the
+next one appears immediately in its place. When maintenance costs nothing, you get **wiki
+bloat**: too much content, in the wrong places, duplicated across pages. Log entries become
+narrative. A todo list mirrors items that then drift from the pages they were copied from.
+
+This is the failure mode that actually happens, and it's the worse of the two, because a
+rotting wiki looks empty while a bloated one looks productive. It's also why a significant
+share of the contract exists to make the agent write *less* — every restraint in it was added
+after something grew where it shouldn't have.
+
+The rules, and the numbers that forced each one, are [11 — Keeping It
+Honest](11-keeping-it-honest.md). Read it before you start adding conventions of your own.
 
 ---
 
