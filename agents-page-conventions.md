@@ -76,7 +76,7 @@ Include only sections with actual content.
 | Section | Purpose |
 |---|---|
 | `## Summary` | What it is (2–4 sentences) |
-| `## Relations` | Triplet table: `Subject \| Predicate \| Object` — links this entity to others via typed predicates from the controlled vocabulary in `agents-domain-knowledge.md` |
+| `## Relations` | Triplet table: `Subject \| Predicate \| Object` — links this entity to others via typed predicates from the 36-term controlled vocabulary in `agents-domain-knowledge.md`. Query the full neighbourhood, including edges stored on other pages, with `./scripts/relations.py <slug>` |
 | `## Key Facts` | Discrete attributes that don't fit a triplet |
 | `## When to Use` | Actionable recommendation, use cases, gotchas |
 | `## Compared To` | Direct comparison with close alternatives; link to a reference page if one exists |
@@ -162,13 +162,15 @@ starts going stale the moment it's written.
 **Required sections, in order** (LINT-enforced):
 
 1. `## Summary` — 2–4 sentences
-2. `## Use Cases` — what it needs to actually do, concretely
-3. `## Hard- and Software` — options table with comparison, then a "Selected" subsection;
+2. `## Relations` — **required while `status` is `active` or `planned`**, directly after
+   `## Summary`. See § Project Relations below
+3. `## Use Cases` — what it needs to actually do, concretely
+4. `## Hard- and Software` — options table with comparison, then a "Selected" subsection;
    supporting infrastructure as relative links to entity pages
-4. `## Plan / Phases` — **GATED: stub only until the plan is manually approved.** Must carry a
+5. `## Plan / Phases` — **GATED: stub only until the plan is manually approved.** Must carry a
    prominent *"Deferred — awaiting manual plan approval."* notice
-5. `## Open Questions` — unresolved decisions blocking progress
-6. `## Log` — chronological, append-only
+6. `## Open Questions` — unresolved decisions blocking progress
+7. `## Log` — chronological, append-only
 
 `deployed` status additionally requires `## Version Control`, `## Backup Concept`, and
 `## Cron Jobs`.
@@ -182,3 +184,35 @@ status moves to `active` and the plan is written out in full.
 documenting the deployed state. The entity page becomes the living document; the project page
 becomes the historical build record and moves to `completed/`. Check for existing coverage
 first — a roster page or adjacent entity may already satisfy it.
+
+## Project Relations
+
+**`## Relations` is required on every project whose `status` is `active` or `planned`**,
+positioned directly after `## Summary` — the same slot entity pages use. LINT enforces presence
+and position; the predicate check enforces the contents.
+
+**Scoped to open projects on purpose.** Requiring it on closed projects too would error on every
+completed and abandoned page in the wiki, and since the error-class checks gate commits, that
+wedges the repo for no benefit: a finished project's relations are of historical interest only.
+Scope a new rule to the pages it actually helps.
+
+**A row is written only if that fact is not already stored elsewhere.** Each fact lives exactly
+once, on whichever page reads naturally, so most of an established project's relations already
+sit on the entity pages that name it. The section therefore opens with a pointer:
+
+```markdown
+## Relations
+
+Full neighbourhood, including relations stored on other pages: `./scripts/relations.py <slug>`
+```
+
+**A pointer-only section is a valid, complete section.** In the wiki this came from, 25 of the
+40 open projects have no page-local row at all, because everything known about them was already
+recorded elsewhere — or because nothing is recorded yet, which is also a true state.
+
+**Never invent a relation to avoid an empty table.** One true row beats five plausible ones. A
+sparse graph is merely incomplete; a graph with inferred edges in it is wrong, and you won't be
+able to tell which edges those were six months later.
+
+**Which predicate?** `evaluates`, unless something more specific fits — see
+`domains/knowledge/agents-domain-knowledge.md` § Which predicate for a project → entity relation.

@@ -1,10 +1,11 @@
 ---
 name: book-capture
 description: "Capture a book recommendation into the wiki as a ranked to-read candidate. Use when the user pastes a link or screenshot text recommending a book, or says 'add this book', 'someone recommended X', 'add X to my to-read', 'should I read X', 'have I read X', or 'do I already have X'. Always checks the existing library across every shelf first — a recommendation for something already read or abandoned is reported as a collision, not filed as new. Fetches a real blurb and writes the candidate page, author-table row and series page per the books-domain flow. Never invents a plot summary."
+maturity: draft
+outputs: wiki/books/candidates/*.md, wiki/books/series/*.md, wiki/books/authors/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: books
 ---
 
 # Book Capture

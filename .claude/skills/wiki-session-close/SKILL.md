@@ -1,10 +1,10 @@
 ---
 name: wiki-session-close
 description: "Close the current wiki work session: verify what changed, log new pages, run verification gates, commit and push. Use when the user says 'close the session', \"we're done\", 'wrap up', \"that's all for today\", 'end session', or signals they're finished. Run this at the end of any session that produced changes."
+maturity: tested
 license: MIT
 metadata:
   version: 1.0.0
-  category: wiki
 ---
 
 # Wiki Session Close

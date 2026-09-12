@@ -1,10 +1,11 @@
 ---
 name: game-capture
 description: "Capture a game into the wiki — a recommendation, a purchase, or one you just started. Use when the user says 'add this game', 'someone recommended [game]', 'I bought [game]', 'add [game] to my backlog', 'do I own [game]', 'have I played [game]', or pastes a store link. Checks ownership across every status first — bundles and sales mean you own more than you think — then files the game page with the required fields for its status."
+maturity: draft
+outputs: wiki/gaming/**/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: gaming
 ---
 
 # Game Capture

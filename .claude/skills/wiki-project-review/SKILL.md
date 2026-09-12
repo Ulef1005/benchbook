@@ -1,10 +1,10 @@
 ---
 name: wiki-project-review
 description: "Stress-test an existing project's plan through a one-question-at-a-time interview before anything gets built. Use when the user says 'review this project', 'stress-test [project]', 'interview me about [project]', \"let's think through [project]\", 'poke holes in this plan', or wants to challenge a plan rather than just orient to it (that's wiki-project-open). Pairs with the plan approval gate — this is the skill that uses the moment where the plan exists and nothing has been built."
+maturity: tested
 license: MIT
 metadata:
   version: 1.0.0
-  category: wiki
 ---
 
 # Wiki Project Review
@@ -27,6 +27,22 @@ Your job here is **not** to help write the plan. It's to find what's wrong with 
 Read the project page in full, plus every entity page it links under
 `## Hard- and Software`. Do not start asking questions until you've read the lot — half the
 weaknesses are visible on the page and asking about them wastes the user's attention.
+
+### Also load the relation neighbourhood
+
+```bash
+./scripts/relations.py <slug>
+```
+
+The page tells you what the project says about itself; this tells you what the *rest of the wiki*
+says about it — what it runs on, what backs it up, what already depends on it. Each fact is
+stored once, on whichever page reads naturally, so half of a project's relations are never on its
+own page.
+
+This matters more here than anywhere else: **a stress-test that only reads the page can only
+challenge the plan's internal logic, never its actual dependencies.** The best questions in a
+review usually come from something the plan doesn't mention. Empty results are common and mean
+nothing is recorded yet.
 
 ---
 

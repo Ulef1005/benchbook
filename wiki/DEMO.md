@@ -41,6 +41,7 @@ index entries together, which is the bit that's tedious by hand.
 | `projects/references/build-decision-log.md` | Decisions binding **more than one** project, which is what `projects/references/` is for |
 | `people/alex-demo.md` | A person page — humans only, no `status:`, `domain: null` |
 | `log/log-archive/2026-07.md` | What log archival produces once the live log passes 500 lines |
+| `log/review.md` | The **review queue** — the one standing list in the wiki, holding contradictions that need a human decision. Its single entry is a planted demo contradiction; the file itself is not demo content and should stay |
 
 ## Two things worth noticing
 

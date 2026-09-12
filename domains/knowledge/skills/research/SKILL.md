@@ -1,10 +1,11 @@
 ---
 name: research
 description: "Research a topic across multiple sources, synthesise what's actually being said, then optionally file the result as a wiki source page. Use when the user says 'research [topic]', 'what's new with [topic]', 'what are people saying about [topic]', 'look up recent discussion on [topic]', or wants fresh external research captured into the wiki. Presents takeaways first, then asks whether to ingest — as a source-only page or a full INGEST with entity pages."
+maturity: draft
+outputs: wiki/sources/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: knowledge
 ---
 
 # Research

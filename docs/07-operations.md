@@ -102,10 +102,16 @@ The maintenance pass. Manually triggered, never automatic.
 
 It's split by what kind of judgement each check needs:
 
-**Mechanical checks run as a plain script.** Missing or malformed frontmatter, files whose
-declared type doesn't match their folder, broken relative links, template sections missing
-from page types that require them, orphaned pages absent from any index. Deterministic,
-fast, cheap, and runnable on every commit. No model involved.
+**Mechanical checks run as a plain script** (`scripts/lint.py`, pure standard library). Missing
+or malformed frontmatter, files whose declared type doesn't match their folder, broken relative
+links, template sections missing from page types that require them, off-vocabulary predicates,
+orphaned pages absent from any index. Deterministic, fast, cheap. No model involved.
+
+**Those checks, and only those, gate commits.** A pre-commit hook runs the script and blocks on
+errors; warnings never block, and the judgement checks below aren't involved — a commit hook that
+needs a model is a commit hook people disable. The line is drawn at *does this require an
+opinion*: a missing required field has one correct answer, so a machine may refuse the commit;
+whether two pages contradict each other does not, so a machine may only mention it.
 
 **Judgement checks run as the model.** Is this entity in the right folder given what it
 actually is? Do these two pages contradict each other? Is this page stale — does it describe
@@ -117,9 +123,15 @@ comprehension, and they're where a linting agent adds something a script can't.
 frontmatter. Its only write permissions are two file-moving operations that never delete:
 archiving old raw sources, and archiving the oldest log entries when the log gets too long.
 
-Run it every few weeks. The interesting output is rarely the broken links — it's the
-staleness and contradiction findings, which are how you discover that two parts of your wiki
-have quietly stopped agreeing.
+**It drains the review queue before it looks for new work.** Contradictions that need a human
+decision go to `wiki/log/review.md` — the one standing list in the wiki — and the next LINT run
+is required to work through them first. A queue that only ever grows is a queue people stop
+reading, and the point of finding a contradiction is resolving it, not collecting it.
+
+Run it every few weeks. The interesting output is rarely the broken links — those the script
+catches, and increasingly the hook catches them before they land. It's the staleness and
+contradiction findings, which are how you discover that two parts of your wiki have quietly
+stopped agreeing.
 
 ---
 

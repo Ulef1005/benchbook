@@ -1,10 +1,11 @@
 ---
 name: deploy-runbook
 description: "Create an install/deploy runbook for a new self-hosted service. Use when the user says 'create a deploy runbook for X', 'write an install runbook for X', 'we need to deploy X', 'runbook for [service]', or is about to plan a new self-hosted service. Scaffolds the full page — prerequisites, stack files, admin account, service-specific phases — plus a pre-filled Fleet Integration phase, so the boring integration steps never get re-derived, re-typed, or silently skipped."
+maturity: draft
+outputs: wiki/projects/references/*-runbook.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: home
 ---
 
 # Deploy Runbook
@@ -94,6 +95,32 @@ This is the point of the skill. Write it **verbatim**, every time, with nothing 
 
 **Adapt this list once, to your own fleet, then stop editing it.** Its value comes from being
 identical across every service.
+
+### Emit the `## Relations` table from these rows — now, not later
+
+Every fleet item you just ticked **is** a relation, and this is the only moment the whole picture
+is in front of you. The mapping is fixed:
+
+| Fleet item | Row to write |
+|---|---|
+| The host it runs on | `<slug> \| runs_on \| <host entity>` |
+| Reverse proxy | `<slug> \| fronted_by \| <proxy entity>` (put the hostname in the object cell) |
+| Backup | `<slug> \| backed_up_by \| <backup entity>` (+ the unit or job name) |
+| Monitoring | `<slug> \| monitored_by \| <monitoring entity>` |
+| Secrets, if any | `<slug> \| secured_by \| <secret store>` (+ which credential) |
+| Data location, if not local | `<slug> \| stores_data_on \| <storage entity>` (+ path) |
+| Parent project | `<slug> \| part_of \| <project>` |
+| The general product | `<slug> \| is_a \| <knowledge entity>` |
+
+Predicates come from the controlled vocabulary in
+`domains/knowledge/agents-domain-knowledge.md`; LINT enforces it. **Omit any row whose step did
+not apply** — an absent row means "not applicable", an invented one means the graph lies. Verify
+with `./scripts/relations.py <slug>`, which reads both directions.
+
+*Why this step exists: most of the predicates in that table were added to the vocabulary only
+after pages kept inventing them — `backed up by`, `fronted by`, `secures` — to describe exactly
+this integration. The runbook was already collecting the information and then throwing the
+structure away.*
 
 Two notes worth keeping:
 

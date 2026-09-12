@@ -1,6 +1,10 @@
 ---
 name: benchbook-design
 description: The benchbook visual language — palette, type, mark, layout and copy rules. Use whenever building or changing anything visible: the wiki site, README assets, social cards, diagrams, slides.
+maturity: tested
+license: MIT
+metadata:
+  version: 1.0.0
 ---
 
 # benchbook design

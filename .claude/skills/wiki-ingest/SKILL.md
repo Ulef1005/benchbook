@@ -1,10 +1,11 @@
 ---
 name: wiki-ingest
 description: "Process a source — a file, a URL, a video, or dictation in chat — into structured wiki pages. Use when the user says 'ingest [file/url]', 'process this', 'let's ingest [subject]', or drops a file in raw/ and wants it turned into wiki pages. Also triggers when the user pastes a URL, PDF path, or image path directly. Orchestrates the full INGEST workflow: detect input, extract content, propose domain, load domain rules, discuss takeaways, run domain dispatch, then update index, overview and log. If no source is given, offers a chat-dictation source page instead."
+maturity: tested
+outputs: wiki/sources/*.md, wiki/*/entities/*.md, wiki/*/references/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: wiki
 ---
 
 # Wiki Ingest
@@ -95,6 +96,31 @@ Nothing is on disk yet. This is where a human corrects a misreading cheaply.
 
 Read `agents-page-conventions.md` before writing a single page. It carries the frontmatter
 tables and the per-page-type section templates.
+
+---
+
+## Step 5b — Read the relation neighbourhood before proposing anything
+
+```bash
+./scripts/relations.py <subject-slug>        # and each obvious candidate entity
+```
+
+Run this **before** dispatch proposes entity pages. It reports both directions of the
+`## Relations` graph — necessary because each fact is stored once, on whichever page reads
+naturally, so an existing entity related to this subject may say nothing about it on its own
+page.
+
+Two decisions depend on what comes back:
+
+- **The Entity Placement Rule** — an entity already in the neighbourhood tells you which folder
+  its siblings chose, which is usually the right answer for this one too.
+- **Whether to create a page at all.** If the useful part of this source folds into a page that
+  already exists, do that instead. The neighbourhood is how you find that page, and this is the
+  main defence against quietly creating a second entity for something already covered under a
+  different name.
+
+An empty result is common and is **not** a signal to create a page — it means nothing related is
+recorded yet.
 
 ---
 

@@ -16,6 +16,7 @@ Every project page carries these, in order, and the lint pass checks for them:
 | Section | Content |
 |---|---|
 | `## Summary` | 2–4 sentences. What this is and why. |
+| `## Relations` | Typed links to the entities and projects this one touches. **Required while the project is `active` or `planned`**, directly after `## Summary`. See below. |
 | `## Use Cases` | What it needs to actually do, concretely. |
 | `## Hard- and Software` | Options considered, in a table, with pros and cons — then a "Selected" subsection. Supporting infrastructure links to entity pages. |
 | `## Plan / Phases` | Implementation phases with checkboxes. **Gated — see below.** |
@@ -25,6 +26,48 @@ Every project page carries these, in order, and the lint pass checks for them:
 Deployed software projects additionally require `## Version Control`, `## Backup Concept` and
 `## Cron Jobs`. Those three exist because they are precisely what you fail to write down and
 desperately need eighteen months later, at which point the answer is a forensic exercise.
+
+## `## Relations` on a project
+
+Projects carry the same triplet table entity pages do — `Subject | Predicate | Object`, with
+predicates from the controlled vocabulary — and it answers the question you actually have when
+you reopen a project after two months: *what does this touch?*
+
+```markdown
+## Relations
+
+Full neighbourhood, including relations stored on other pages: `./scripts/relations.py <slug>`
+
+| Subject | Predicate | Object |
+|---|---|---|
+| office-air-quality-sensor | evaluates | [ESPHome](../knowledge/entities/esphome.md) |
+```
+
+Three things about it are deliberate and easy to get wrong:
+
+**It's required only while the project is open.** Requiring it on completed and abandoned pages
+too would mean an error on every historical page in the wiki, and since errors block commits,
+that wedges the repo to document something of purely historical interest. Scope a new rule to the
+pages it helps.
+
+**A pointer-only section is complete.** Each fact is stored exactly once, on whichever page reads
+naturally — so most of an established project's relations already live on the entity pages that
+name it, and its own table is legitimately empty. The pointer line is the section doing its job.
+In the source wiki, 25 of 40 open projects have no page-local row at all.
+
+**Never invent a row to avoid an empty table.** One true row beats five plausible ones. This is
+the rule the whole structure depends on: a sparse graph is merely incomplete, while a graph with
+inferred edges is wrong in a way you cannot detect later — nothing marks which rows were guesses.
+
+Because edges are stored once, reading a project page shows you about half of what the wiki knows
+about it. `./scripts/relations.py <slug>` reads both directions, and it's the first thing the
+`wiki-project-open` and `wiki-project-review` skills run.
+
+**Which predicate?** `evaluates` is the general project→entity one — assessing, adopting,
+rejecting or changing, resolved or open. Reach for `uses` when the project depends on the entity
+to run, `builds` when it produces it, `replaces` when it supersedes it. Otherwise `evaluates`.
+
+---
 
 The `## Hard- and Software` options table is quietly the most valuable section in the whole
 system. It's where "why not the obvious alternative?" gets answered, permanently, at the

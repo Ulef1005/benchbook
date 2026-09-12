@@ -7,9 +7,13 @@ opposite directions.
 reality. This is the one everybody expects.
 
 **Bloat:** the agent writes *too much*, in the wrong places, duplicating itself. Pages grow
-past the point of usefulness. The log fills with narrative. The todo list mirrors things that
+past the point of usefulness. The log fills with narrative. A central list mirrors things that
 then drift from their sources. This is the one that actually happens, and it's worse, because
 a rotting wiki looks empty and a bloated one looks productive.
+
+There is a third, quieter one that only shows up later: **the maintenance layer itself rots.**
+The rules, checks and skills you build to prevent the first two go stale, get bypassed, or turn
+out never to have run. Rule 6 below is about that.
 
 This document is the set of rules that came out of hitting the second one repeatedly, with
 the numbers that caused each change. It's the most useful thing in this repo, because it's
@@ -42,18 +46,54 @@ it belongs on a page instead** — with at most a one-line pointer from the log.
 
 ---
 
-## Rule 2 — the todo list points, it doesn't mirror
+## Rule 2 — there is no todo list
 
-**The rule:** the central todo file links to project pages rather than copying their open
-items. Project todos live on the project page and nowhere else.
+**The rule:** open work lives on the page the work belongs to. Project todos in that project's
+`## Open Questions`, entity todos on the entity page, contradictions in a review queue that LINT
+drains before it looks for new work. There is no central list.
 
-**What went wrong.** It used to mirror them, on the theory that one list of everything is
-convenient. A lint pass found **60 of roughly 76 mirrored items had drifted from the pages
-they were copied from** — closed on the page but still open in the list, reworded, or
-referring to a phase that no longer existed.
+This rule was wrong twice before it was right, and both failures are instructive.
 
-**The lesson:** any duplicated state will diverge, and it will diverge silently, and you will
-trust the wrong copy. If two places show the same fact, one of them must be a link.
+**Version 1 — the mirror.** A single todo file copied open items out of project pages, on the
+theory that one list of everything is convenient. A lint pass found **60 of roughly 76 mirrored
+items had drifted from the pages they came from** — closed on the page but still open in the
+list, reworded, or pointing at a phase that no longer existed.
+
+The lesson looked obvious: any duplicated state will diverge, silently, and you will trust the
+wrong copy. If two places show the same fact, one of them must be a link.
+
+**Version 2 — pointer-only.** So the file stopped copying and started linking: names of projects,
+plus a hand-curated section for wiki-meta decisions and deferred items. No duplication. This
+held for months and felt correct.
+
+It was still wrong, just more slowly. Measured four separate times across four weeks, **roughly a
+third of the remaining entries had a stale or wrong premise.** The worst of it was the *Deferred*
+section, the part that couldn't drift because nothing else owned it: of the last five items,
+**every single one** turned out on inspection to be already done, already decided, or resting on
+something that had stopped being true. One had been waiting on a condition that was met the day
+after it was filed.
+
+**The lesson that actually generalises** is sharper than "don't duplicate state":
+
+> **A file whose whole job is to tell you what is open, and which is a third wrong, is worse than
+> no file — because you trust it.**
+
+An empty spot in the wiki prompts you to look. A confident, stale list stops you looking. The
+pointer-only version fixed the drift and left the rot, because the rot was never about
+duplication — it was about a list whose entries no one was responsible for re-reading. Both
+versions were a second index over work that already had a home.
+
+**What replaced it.** Nothing, deliberately. Every item moved to the page that owns it, where
+you'd have looked for it anyway, and where whoever touches that page next is forced to walk past
+it. If you want one view of everything open, *generate* it — `grep` the unchecked boxes out of
+the `## Open Questions` sections across the project folder. A derived view can only be stale for
+as long as it takes to re-run it.
+
+**The one list that survived** is the review queue (`wiki/log/review.md`), and the reason it
+survives is that it holds exactly one kind of item — a contradiction that needs a human decision
+— and LINT is required to drain it before it does anything else. It has an owner and a clearing
+mechanism. That's the test worth applying to any standing list you're tempted to keep: **who is
+obliged to empty this, and when?** Without an answer, you're building version 2 again.
 
 ---
 
@@ -111,6 +151,53 @@ back to the repo.
 
 ---
 
+## Rule 6 — the agent's own tooling rots too, and nobody checks it
+
+Everything above is about the wiki. This one is about the layer you build to maintain the wiki,
+which turns out to rot the same way and is much easier to ignore — because it isn't content, so
+no content check looks at it.
+
+**The rule:** the skill directory on disk is the source of truth. Any page that lists your
+skills is a **view** over it, and a mechanical check fails when the two disagree in either
+direction — a skill with no listing, or a listing with no skill.
+
+**What went wrong.** Three separate pages ended up claiming to be the roster, which meant three
+manual audits in five weeks and three different answers. The documentation step that was
+supposed to keep them in step had a measured **29% miss rate** — not because anyone was careless,
+but because it was unenforced prose in a checklist, and unenforced prose is a suggestion.
+
+This repo was not exempt. The first run of the ported check found `benchbook-design` shipping in
+`.claude/skills/` and listed in no roster at all, two weeks after it landed.
+
+**The generalisable part** is not "keep your docs in sync". It's:
+
+> **A stated fact that a script can verify should be verified by a script.** If it can't be, the
+> claim is an opinion, and you should write it as one.
+
+"The roster lists every skill" is checkable in four lines of code. So it gets checked, and the
+sync step stops depending on anyone remembering.
+
+**Two fields make the rest mechanical.** `maturity: draft|tested|hardened` separates *"unused
+because new"* from *"unused because dead"* — states that look identical from usage data and
+demand opposite responses. `outputs: <glob>` names the page shape a skill produces, which turns
+"is this repeated work already covered?" into a comparison against git history rather than a
+judgement call. Both are one line of YAML; both are in [10 — Skills](10-skills.md).
+
+**The detector's first real output was nothing.** Run against four and a half months of history,
+it reported zero new-skill candidates and one bypass. That is the result being reported honestly,
+and it belongs here rather than in a list of wins: a maintenance check that has to justify itself
+with findings will find some. `Clean — nothing to observe` must be a blessed output, or you have
+built a machine for generating work.
+
+**One thing deliberately did not ship.** The version of this running in the source wiki also
+harvests session transcripts to count invocations. That reads a specific tool's private files,
+and this repo has been tool-agnostic since the day it went public — so the transcript layer
+stayed behind and only the parts that run on git and the filesystem travelled. Worth naming as a
+general habit: when you port a system, the parts that assume your particular setup are the parts
+that will quietly break for everyone else.
+
+---
+
 ## The human gates
 
 Everything above is about what the agent writes. This section is about what it isn't allowed
@@ -157,21 +244,38 @@ it's genuinely useful, and keeps the human as the only writer of record for anyt
 requiring judgement.
 
 Mechanical, unambiguous checks — missing frontmatter fields, broken relative links, files in
-the wrong folder for their declared type — run as a plain script rather than as model
-judgement. Cheaper, deterministic, and it can be run on every commit.
+the wrong folder for their declared type — run as a plain script (`scripts/lint.py`) rather than
+as model judgement. Cheaper, deterministic, and repeatable, which is the one property a check
+cannot do without.
+
+**Those checks, and only those, gate commits.** `scripts/pre-commit.sh` runs the script and
+blocks on errors. Warnings never block. The judgement checks are not involved at all — they need
+a model, and a commit hook that needs a model is a commit hook people disable within a week.
+
+The line between "advisory" and "blocking" is drawn at *does this require an opinion*. A missing
+required field has exactly one correct answer, so a machine may refuse the commit. Whether two
+pages contradict each other does not, so a machine may only mention it. Getting that boundary
+wrong in either direction is costly: gate on judgement and people bypass the gate habitually;
+gate on nothing and the deterministic failures accumulate anyway.
 
 ---
 
 ## The pattern behind all of these
 
-Each rule above started as a reasonable-sounding convention and failed in the same way: it
-allowed two copies of something to exist, or it produced output nobody read.
+Each rule above started as a reasonable-sounding convention and failed in one of three ways: it
+allowed two copies of something to exist, it produced output nobody read, or it was a claim
+nothing ever checked.
 
-So the two questions worth asking of any rule you add:
+So the four questions worth asking of any rule you add:
 
 1. **Does this create a second copy of a fact?** If yes, one of them has to become a link.
 2. **What percentage of content will this flag?** If it's more than a few percent, the rule
    isn't ready — it will train you to ignore its output.
+3. **Who is obliged to re-read this, and when?** A rule that produces a standing list nobody
+   owns produces a stale list, and a stale list is worse than an empty one. If the answer is
+   "whoever notices", the rule needs a mechanism, not better wording.
+4. **Can a script verify it?** If yes, it should — an unenforced convention has a measurable
+   miss rate, and in this wiki that number was 29%.
 
 ---
 

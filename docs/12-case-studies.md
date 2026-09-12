@@ -146,14 +146,57 @@ writing them.
 
 ---
 
+## 5. A check that found nothing, and the bug it found anyway
+
+The smallest case study here, included because its output was *empty* and that is the point.
+
+**The problem.** The skills the agent uses had accumulated to twenty across four months, tracked
+in three different places that each claimed to be the roster. Three manual audits in five weeks
+had produced three different answers. The documentation step meant to keep them aligned had a
+measured **29% miss rate** — not through carelessness, but because it was unenforced prose in a
+checklist, and unenforced prose is a suggestion.
+
+**The build.** One roster, defined as a *view* over the directory on disk, with a script that
+fails when the two disagree in either direction. Two frontmatter fields — `maturity:` to separate
+"unused because new" from "unused because dead", `outputs:` to name the page shape a skill
+produces. Then a detector: compare pages created over recent sessions against every declared
+`outputs:` glob, and cluster whatever matches nothing. That cluster is the honest answer to *what
+am I doing repeatedly by hand that no skill covers*.
+
+**The result.** Run against four and a half months of history, the detector reported **zero
+new-skill candidates and one bypass.** Nothing to build.
+
+That is worth publishing precisely because it is nothing. A maintenance check that has to justify
+its existence with findings *will* produce findings, and the reports get longer and less true
+until nobody reads them. `Clean — nothing to observe` has to be an acceptable output or the
+practice rots — which is, recursively, the same bloat failure the rest of this repo is about.
+
+**And then it found something real, in itself.** The first live run of the observation step
+reported a skill as broken. It wasn't. The failure record came from an older session where that
+skill genuinely didn't exist yet — installing it had retroactively re-attributed a *caller's*
+dead-dependency error to the newly installed skill. A subtle class worth naming: **installing
+something can rewrite the meaning of historical records about it.** The fix separated three
+distinct non-failures from real ones — refused (a guard worked), unresolved (it didn't exist
+yet), and unassessed (nobody judged it).
+
+The loop caught a defect in its own instrumentation, on its first run, before it could produce a
+single false alarm in normal use. That is a better argument for the design than any of the
+findings it didn't have.
+
+**The transferable bit:** build the check so that finding nothing is a valid, reportable outcome.
+Then believe it when it does.
+
+---
+
 ## The through-line
 
-None of these are about the wiki being clever. They're about four unglamorous properties:
+None of these are about the wiki being clever. They're about five unglamorous properties:
 
 - The reasoning was written down **at the moment it happened**, not reconstructed later
 - **Stopping** was recorded as deliberately as starting
 - The schema **grew when reality demanded it**, through approval rather than drift
 - **A negative result survived** in the form it actually happened in
+- **A clean result was allowed to be clean**, instead of padded into work
 
 The agent did the writing. The human made the calls. That division is the whole system.
 

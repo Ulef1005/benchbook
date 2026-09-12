@@ -18,6 +18,18 @@ A CO₂ and particulate sensor for the office, reporting somewhere visible enoug
 actually changes behaviour. The room gets stuffy by mid-afternoon and nobody notices until
 it's bad.
 
+## Relations
+
+Full neighbourhood, including relations stored on other pages: `./scripts/relations.py office-air-quality-sensor`
+
+| Subject | Predicate | Object |
+|---|---|---|
+| office-air-quality-sensor | evaluates | [ESPHome](../knowledge/entities/esphome.md) |
+
+*One row, because one is what's true so far. The sensor itself isn't chosen yet, so there is no
+`evaluates` edge for it — a project's relations table grows as decisions land, and inventing
+rows to make it look complete is how a graph starts lying.*
+
 ## Use Cases
 
 | Need | Why |

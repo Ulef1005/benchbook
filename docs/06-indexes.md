@@ -38,7 +38,7 @@ genuinely need that, add a search tool as a supplement — the index stays the p
 The original design was one index file. That's what the pattern this system came from
 describes, and it notes the approach works well at roughly hundreds of pages.
 
-The live wiki is at 1,563. Well past that.
+The live wiki is at 1,597. Well past that.
 
 The fix wasn't embeddings — it was splitting the index by domain:
 
@@ -86,6 +86,49 @@ about options." Writing these lazily is the main way this approach fails.
 
 **Order is by type, not alphabetical.** Sources, entities, references, projects. The agent is
 usually looking for a kind of thing, and grouping by kind means it can skip whole blocks.
+
+---
+
+## The second axis: relations
+
+Indexes answer *what exists, by subject*. They do not answer *what is connected to this*, and
+that is a different question you ask constantly — what runs on this host, what backs this up,
+what did that decision affect.
+
+That's what the `## Relations` tables are for. Every page that has one carries rows of
+`Subject | Predicate | Object`, with predicates drawn from a controlled 36-term vocabulary, and
+together they form a small typed graph across the whole wiki. It is not a second index; it's a
+second *axis* over the same pages, and it earns its keep the moment the answer you need spans
+folders.
+
+**One rule shapes everything about how it's read: each fact is stored exactly once**, on
+whichever page it reads most naturally on. The alternative — writing both directions — is the
+mirroring failure from [11 — Keeping It Honest](11-keeping-it-honest.md) wearing a different hat,
+and it would drift the same way.
+
+The consequence is that **a page's own table shows only about half of what the wiki knows about
+it.** So the graph is read with a script rather than by opening the page:
+
+```bash
+./scripts/relations.py esphome        # inbound AND outbound edges, wherever they're stored
+```
+
+Depth 1 — direct neighbours — is the usable unit and is what the project skills run
+automatically. Deeper walks answer "what is the blast radius of changing this", which is a real
+question and a much bigger answer.
+
+**Why a controlled vocabulary rather than free text.** Because a free predicate field becomes
+unqueryable within months. That is not a prediction; it's twice-measured. The first drift was
+synonyms — `is_made_by`, `produced_by` and `made_by` all live for the same relation. The second
+was worse and is the more useful story: the check enforcing the vocabulary had been scoped to a
+single folder, reported clean for months, and when the graph was finally measured end to end,
+**185 of 709 relations sat outside that scope carrying 124 off-vocabulary predicates** — `backed
+up by` on eight pages against `backed_up_by` on one. "What backs up this service?" had no answer
+a script could give.
+
+The repair doubled the vocabulary to 36 terms, every added pair justified by at least three rows
+of evidence already in the wiki. Extend a vocabulary from drift you can see, not from cases you
+can imagine.
 
 ---
 

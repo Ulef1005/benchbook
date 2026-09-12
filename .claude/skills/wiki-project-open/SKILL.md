@@ -1,10 +1,10 @@
 ---
 name: wiki-project-open
 description: "Load and orient to an existing wiki project. Use when the user says \"let's work on [project]\", 'open project [name]', 'continue [project]', 'pick up where we left off on X', or wants to resume an active or planned project. Reads the page and presents status, recent log entries and open questions so the user can immediately decide what to do next. Use whenever the user references a project by name and wants to do something with it — even without saying 'open'."
+maturity: tested
 license: MIT
 metadata:
   version: 1.0.0
-  category: wiki
 ---
 
 # Wiki Project Open
@@ -39,6 +39,33 @@ If it's in `completed/` or `abandoned/`, say so up front — the user may be loo
 rather than live work, and reviving an abandoned project is a real thing that happens.
 
 If nothing matches, say so and offer `/wiki-project-start`.
+
+---
+
+## Step 2.5 — Load the project's relation neighbourhood
+
+```bash
+./scripts/relations.py <slug>
+```
+
+Every `## Relations` fact is stored **once**, on whichever page reads naturally, so the project
+page shows only half its relations — the rest live on the entity pages that name it. This reads
+the whole graph and reports both directions. Run it before Step 3 and read the pages it names;
+that is the context for working on this project.
+
+**Stay at the default depth 1.** Direct neighbours are what orientation needs. Depth 2 and 3 grow
+fast enough to cost more than reading the whole domain index, and they answer a different
+question — "what is the blast radius of changing this" — which is rarely the one you have.
+
+**An empty result is normal — say so in one line and move on.** Relations are added at next touch
+rather than backfilled, so most projects have none yet. Do not report it as a problem, do not
+investigate it, and do not let it delay Step 3. *(This instruction exists because a step that
+reports a problem on most runs trains the reader to ignore the step.)*
+
+**If the project has no `## Relations` section and you go on to do real work on it, add one** —
+this is the "next touch" the backfill relies on. It goes directly after `## Summary`. Predicates
+come from the controlled vocabulary in `domains/knowledge/agents-domain-knowledge.md`. Record
+only relations the page already states; never infer one to fill the table.
 
 ---
 

@@ -1,10 +1,11 @@
 ---
 name: game-drop
 description: "Capture why you stopped playing a game, while you still remember. Use when the user says 'I dropped [game]', \"I'm done with [game]\", 'stopped playing [game]', 'shelving [game]', 'bounced off [game]', or otherwise signals they've stopped. Distinguishes dropped from shelved, captures the hour count and the specific reason, and records whether anything would bring them back."
+maturity: draft
+outputs: wiki/gaming/**/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: gaming
 ---
 
 # Game Drop

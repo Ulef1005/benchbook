@@ -41,13 +41,16 @@ post-flight) — **don't preload them.**
    `## Change History`. See § 6 Log for the rule and why.
 8. **Flag contradictions explicitly** — never silently overwrite conflicting information.
 9. **Ask before creating pages** during interactive ingest — discuss with the human first.
-10. **Keep pages concise** — split rather than bloat (past ~500 words, **~1,000 for `entity`
+10. **Keep pages concise** — split rather than bloat (past ~500 words, **~3,000 for `entity`
     pages**, consider splitting). **Measured excluding append-only sections** (`## Log`,
-    `## Change History`) — a project's build history growing is not bloat — and **`project`
-    and `source` pages are exempt**: the first because its template mandates six sections, the
-    second because a source page transcribes external material and its length is inherent.
-    The **`entity` limit is higher** because operational hub pages are dense on purpose, and
-    splitting one lookup into three is a downgrade. LINT warns on the rest.
+    `## Change History`, `## Modifications`) — a project's build history growing is not bloat —
+    and **`project`, `source` and `reference` pages are exempt**: a project's own template
+    mandates six sections, a source page transcribes external material so its length is
+    inherent, and every shape a reference takes (install runbook, multi-entity comparison,
+    project-attached analysis) is long by construction. The **`entity` limit is 6× higher**
+    because operational hub pages are dense on purpose, and splitting one lookup into three is a
+    downgrade. LINT warns on the rest. *(Every carve-out here was added after measuring which
+    pages the rule actually flagged — see `docs/11-keeping-it-honest.md` Rule 3.)*
 11. **Propose changes to this file** — don't modify the schema silently.
 12. **Deployed-code commit rule.** If any code in this repo (or a linked infrastructure repo)
     is a *live checkout* running on a machine, it MUST be committed and pushed before the
@@ -110,9 +113,15 @@ and appends one line to `log.md`. Write-capable only for two mechanical operatio
 - **Log archival:** when `log.md` exceeds 500 lines, move the oldest entries to
   `wiki/log/log-archive/YYYY-MM.md` until ≤350 lines remain.
 
-Mechanical checks belong in `scripts/lint.py` (`python3 scripts/lint.py`; exit 1 = findings).
-The LLM-judgment checks — entity placement, contradictions, staleness — live in
+Mechanical checks live in `scripts/lint.py` (`python3 scripts/lint.py`; exit 1 = findings). The
+LLM-judgment checks — entity placement, contradictions, staleness — live in
 `agents-lint-checks.md`; read it before running LINT.
+
+**The error-class mechanical checks gate commits** via `scripts/pre-commit.sh` (install:
+`ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit`). Errors block; warnings never block;
+the judgment checks are not involved. Bypass deliberately with `git commit --no-verify`. This is
+the one place LINT is not purely advisory, and it is deliberately restricted to checks with
+exactly one correct answer.
 
 ---
 
@@ -130,8 +139,9 @@ The LLM-judgment checks — entity placement, contradictions, staleness — live
   only).
 - **Domain-local:** `<domain>/entities/` + `<domain>/references/`. Subdomain distinctions live
   in `subdomain:` frontmatter, not folders.
-- **Meta:** `index.md`, `index-<domain>.md`, `overview.md`, `todo.md`, `log/log.md` (overflow
-  → `log/log-archive/YYYY-MM.md`; LINT reports → `log/lint-YYYY-MM-DD.md`).
+- **Meta:** `index.md`, `index-<domain>.md`, `overview.md`, `log/log.md` (overflow
+  → `log/log-archive/YYYY-MM.md`; LINT reports → `log/lint-YYYY-MM-DD.md`). There is
+  deliberately **no todo file** — see § 6.
 
 **Entity Placement Rule** — decided at first ingest by what the entity *is* (not how many
 domains reference it); existing entities are reviewed only when next touched:
@@ -167,9 +177,17 @@ half-populated.
 
 ### `scripts/` — Code Store
 
-Holds code that is **not** a live deployed service: wiki tooling (`lint.py` and friends, loose
-at root) and per-project build recipes or firmware source whose deployed form is a separate
-artifact (`scripts/<slug>/`, each with a `README.md` linking back to its wiki page).
+Holds code that is **not** a live deployed service: wiki tooling loose at root, and per-project
+build recipes or firmware source whose deployed form is a separate artifact (`scripts/<slug>/`,
+each with a `README.md` linking back to its wiki page).
+
+Shipped tooling:
+
+| Script | What it does |
+|---|---|
+| `lint.py` | All mechanical LINT checks. `python3 scripts/lint.py`; exit 1 = findings |
+| `pre-commit.sh` | Git hook wrapper — runs `lint.py` and blocks the commit on errors only |
+| `relations.py` | Neighbourhood lookup over the `## Relations` graph: `./scripts/relations.py <slug>` reports a page's inbound **and** outbound edges. Needed because each edge is stored exactly once, on whichever page reads naturally, so a page's own table shows only half its relations. `--depth` walks further (capped); **depth 1 is the usable unit** |
 
 Continuously-running deployed services belong in their own infrastructure repo, where the
 on-host path **is** the git working tree — so a field hotfix is a real commit rather than a
@@ -208,7 +226,7 @@ the `channel:` frontmatter field. Template → `agents-domain-knowledge.md`.
 
 ---
 
-## 6. Index, Log, Overview, Todo
+## 6. Index, Log, Overview
 
 **Index (split):** `wiki/index.md` (master, ~50 lines) = `## People` + `## Domain Indexes`
 pointer list + `## Meta`; changes only when a domain or meta page is added.
@@ -239,12 +257,32 @@ that's the signal it belongs on a page instead — with at most a one-line point
 **Overview (`wiki/overview.md`):** `## Themes` (cross-cutting synthesis) + `## By Domain` (one
 paragraph each).
 
-**Todo (`wiki/todo.md`)** — the single todo location: `## Active/Planned Projects` are
-**pointer-only** lists linking to each project page. Project todos live on the page's required
-`## Open Questions` section and are **not** duplicated here — in the original wiki, 60 of ~76
-mirrored items had drifted from their source pages before this changed. Plus `## Wiki Meta`
-(hand-curated: pending decisions, schema proposals, deferred items) and `## LINT Findings`
-(rewritten by each LINT run).
+**Todo — there is deliberately no todo file.** Open work lives where the work lives:
+
+| Open work | Lives in |
+|---|---|
+| Project todos | that project page's required `## Open Questions` |
+| Entity / people todos | the entity or person page |
+| Contradictions needing a human decision | `wiki/log/review.md` — drained by LINT before it looks for new work |
+| LINT findings | the dated `wiki/log/lint-YYYY-MM-DD.md` report |
+| Schema proposals | wherever you track wiki-meta work — a project page, not a list |
+
+**Why there is no list.** The original wiki had one, and it failed twice in the same way. First
+as a *mirror*: it copied project open-items, and a lint pass found 60 of ~76 had silently
+drifted from the pages they came from. So it was cut back to **pointer-only** — links to project
+pages, nothing duplicated. That version failed too, just more slowly: measured four times over
+four weeks, roughly a third of its remaining entries had a stale or wrong premise, and of the
+last five deferred items, **every single one** turned out on inspection to be already resolved
+or based on something no longer true.
+
+The lesson is sharper than "don't duplicate state". **A file whose whole job is to tell you what
+is open, and which is a third wrong, actively misleads** — it is worse than no file, because you
+trust it. Pointer-only fixed the drift and left the rot. Both versions were a second index over
+work that already had a home.
+
+If you want one view of everything open, *generate* it — `grep` the unchecked boxes out of
+`## Open Questions` across the project folder. A derived view can be stale for exactly as long
+as it takes to re-run it.
 
 ---
 
@@ -264,8 +302,8 @@ load the relevant one at INGEST pre-flight, and only for installed domains.
    the entity.
 5. **References — flag, don't auto-update.** A new reference needs human approval **and** 4+
    entities. If a source adds to an existing reference, never edit silently: ask to (a) update
-   now, (b) record it in `todo.md § Wiki Meta`, or (c) deprecate → split into entities with
-   `## Compared To` cross-links.
+   now, (b) record it as an open question **on the reference page itself**, or (c) deprecate →
+   split into entities with `## Compared To` cross-links.
 
 ---
 

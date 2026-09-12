@@ -34,5 +34,5 @@ index. That two-step is what keeps retrieval cost flat as the wiki grows. See
 ## Meta
 
 - [Overview](overview.md) — cross-cutting themes and a paragraph per domain
-- [Todo](todo.md) — pointers to active projects, wiki-meta decisions, latest LINT findings
+- [Review Queue](log/review.md) — contradictions awaiting a human decision (the only standing list; there is no todo file)
 - [Log](log/log.md) — chronological record of wiki-structural events

@@ -267,6 +267,81 @@ a question it asks you.
 
 ---
 
+## Frontmatter: `maturity:` and `outputs:`
+
+Every skill carries a name and a description — that's what makes it findable. Two further
+fields carry more weight than they look like they should:
+
+```yaml
+---
+name: wiki-project-start
+description: "Create a project page... Use when the user says 'start a project'..."
+maturity: tested          # draft | tested | hardened
+outputs: wiki/projects/*.md
+---
+```
+
+### `maturity:` — because new and dead look identical
+
+A skill with zero recorded uses is ambiguous in the worst way. It might be three days old. It
+might be broken. It might have been superseded by a habit you formed without noticing. From
+usage data alone those are the same picture, and the default assumption — *"nobody needed it"* —
+is the one that lets a broken skill sit untouched.
+
+One human-set line removes the ambiguity:
+
+| Value | Means |
+|---|---|
+| `draft` | Written, not yet proven. Zero uses is expected |
+| `tested` | Run end to end at least once, on real input |
+| `hardened` | Run repeatedly; its failure modes are known |
+
+This is not a maturity model for its own sake. It exists so that *"`tested` or `hardened`, and
+never invoked"* becomes a reportable condition — which is a retirement candidate — while a
+`draft` sitting idle is simply a `draft`.
+
+In the wiki this came from, one skill was broken for **seven weeks** before anyone found out. It
+had shipped, it looked fine, nobody had run it end to end, and its silence read as "not needed
+lately". The distinction between *believed* working and *known* working is the entire content of
+this field.
+
+### `outputs:` — the field that makes coverage mechanical
+
+`outputs:` is a glob naming the page shape a skill produces. It reads like documentation. It is
+actually the machinery for two checks that are otherwise pure guesswork:
+
+**"What am I doing by hand, repeatedly, that no skill covers?"** Take the pages created across
+recent sessions, match each against every declared `outputs:` glob, and cluster what's left. A
+shape that keeps appearing and matches nothing is a new-skill candidate, surfaced with evidence
+— a page list and a session span — instead of a feeling that you've done this before.
+
+**"Which skills am I bypassing?"** The same comparison run backwards. If a shape a skill
+*declares* keeps being created while that skill is never invoked, the skill is being routed
+around. Almost always the cause is trigger wording: the description doesn't match how you
+actually phrase the request, so neither you nor the agent reaches for it.
+
+Both checks read from things that already exist — git history and the skill files themselves.
+Neither asks the agent to notice something, which matters: **a check that depends on the agent
+spotting a pattern is a check that fires when the agent is already paying attention**, which is
+exactly when you don't need it. Hang detection on the record, not on attention.
+
+> *Both ideas — the generalisability test that decides whether a repeated sequence is worth
+> packaging, and the rule that triggers must hang on events in the tool record rather than on
+> the agent noticing — come from the `task-observer` skill by Eoghan Henn (CC BY 4.0). The
+> implementation here is our own; the debt is to the thinking.*
+
+### What the null result looks like
+
+The first time this was run against four and a half months of real history, it reported **zero
+new-skill candidates and one bypass**.
+
+That is a good output, and it is worth saying so explicitly, because the pressure to pad a
+report is real and it is what kills audit practices. `Clean — nothing to observe` has to be a
+blessed result, or every run quietly inflates to justify itself and you stop trusting any of
+them.
+
+---
+
 ## Skills vs the contract
 
 Easy to conflate, cleanly separated in practice:

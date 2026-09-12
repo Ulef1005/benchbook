@@ -17,6 +17,21 @@ const recall = [
   { q: "Why that way?", a: "Including the options you considered and dropped, and what ruled each one out." },
 ];
 
+const parts = [
+  { n: "01", t: "The contract", href: "/contract/agents-core/", more: "Read agents-core.md",
+    body: "One file the agent reads at session start: hard rules, page conventions, what needs your approval. It is co-owned — the agent proposes changes to it and never edits it silently." },
+  { n: "02", t: "Page types and domains", href: "/docs/05-page-types/", more: "Page types",
+    body: "source, entity, reference, project — each with a template, required frontmatter, and a placement rule that decides where a thing goes before you have to think about it." },
+  { n: "03", t: "Indexes", href: "/docs/06-indexes/", more: "How retrieval works",
+    body: "Per-domain catalogues the agent reads before answering. This is the retrieval layer. No vector store, no embeddings, nothing to re-index after an edit." },
+  { n: "04", t: "Relations", href: "/docs/06-indexes/#the-second-axis-relations", more: "The second axis",
+    body: "A typed graph across the pages, drawn from a 36-term controlled vocabulary. Each fact is stored exactly once, so a script reads it back from both directions — what runs on this, what backs it up, what a decision touched." },
+  { n: "05", t: "Skills", href: "/docs/10-skills/", more: "The core six",
+    body: "Packaged procedures for the recurring jobs: ingest a source, start or open a project, stress-test a plan, lint, close a session. They carry a maturity field, because a skill with no uses might be new or might be dead." },
+  { n: "06", t: "Checks", href: "/docs/11-keeping-it-honest/", more: "Keeping it honest",
+    body: "Every mechanical rule as a script you can run in a fresh clone. Errors block a commit through a git hook; warnings never do; anything needing an opinion stays advisory and goes in a report." },
+];
+
 const problems = [
   { n: "01", t: "Reasoning decay", href: "/docs/01-concept/#the-actual-problem", more: "The concept",
     body: "Code survives, but why you made a decision doesn't. benchbook captures the rejected alternatives, the reasoning, and the context alongside the artifact." },
@@ -50,8 +65,11 @@ const problems = [
       <div class="dim">→ project page? <span class="bright">y</span></div>
       <div class="gap"></div>
       <div><span class="dim">$</span> /wiki-lint</div>
-      <div class="dim">→ 4 pages checked · 3 findings</div>
-      <div class="dim">→ written to todo.md</div>
+      <div class="dim">→ 22 pages checked · 0 errors · 1 warning</div>
+      <div class="dim">→ report written · queue drained</div>
+      <div class="gap"></div>
+      <div><span class="dim">$</span> ./scripts/relations.py esphome</div>
+      <div class="dim">→ 3 edges · <span class="neon">2 stored on other pages</span></div>
     </div>
   </section>
 
@@ -81,6 +99,23 @@ const problems = [
           <div>
             <h3>{p.t}</h3>
             <p>{p.body}{p.n === "03" ? <> <em>less</em>.</> : null}</p>
+            <a class="more" href={`${base}${p.href}`}>{p.more} →</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="band">
+    <h2>What's actually in the repo</h2>
+    <p class="sub">Six moving parts. Mostly plain markdown, plus 870 lines of dependency-free Python and shell.</p>
+    <div class="problems">
+      {parts.map((p) => (
+        <div class="problem">
+          <span class="n">{p.n}</span>
+          <div>
+            <h3>{p.t}</h3>
+            <p>{p.body}</p>
             <a class="more" href={`${base}${p.href}`}>{p.more} →</a>
           </div>
         </div>

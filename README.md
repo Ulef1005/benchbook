@@ -103,7 +103,7 @@ What got added along the way:
 | Addition | Why |
 |---|---|
 | **Domains** as a first-class concept | One flat wiki stops being navigable somewhere in the low hundreds of pages |
-| **A split index** | The gist notes a single index works well at "~hundreds of pages." This one is at 1,563; the index is now one small master file plus a catalogue per domain |
+| **A split index** | The gist notes a single index works well at "~hundreds of pages." This one is at 1,597; the index is now one small master file plus a catalogue per domain |
 | **Page types with templates** | source / entity / reference / project, each with required frontmatter and a placement rule |
 | **Projects** | The gist's examples are research, reading, and business. Tracking things *you are building* — phases, rejected options, status — is a different shape and needed its own page type |
 | **Human approval gates** | The gist mentions humans-in-the-loop only for the team case. In personal use they turned out to be the thing that keeps the wiki trustworthy |
@@ -130,7 +130,7 @@ read first.
 
 ## What it is, concretely
 
-Five moving parts, all of them text:
+Six moving parts, five of them text and one a short script:
 
 | Part | What it does |
 |---|---|
@@ -138,7 +138,9 @@ Five moving parts, all of them text:
 | **Domains** | Top-level subject areas, shipped as installable **packs** — rules, skills and page types bundled per subject. Three installed by default (`knowledge`, `home`, `projects`); `books` and `cooking` available. |
 | **Page types** | `source`, `entity`, `reference`, `project` — each with a template and required frontmatter. |
 | **Indexes** | Per-domain catalogue files the agent reads *before* answering. This is the retrieval layer. There is no vector store. |
+| **Relations** | A typed graph across the pages — `Subject \| Predicate \| Object` rows drawn from a 36-term controlled vocabulary. Each fact is stored exactly once, so `scripts/relations.py <page>` reads it back from both directions. |
 | **Skills** | Packaged procedures for the recurring operations: ingest a source, start/open a project, lint the wiki, close a session. Your tool may call these skills, commands, prompts, or rules. |
+| **Checks** | `scripts/lint.py` — every mechanical rule as a dependency-free script. The error-class checks gate commits via a pre-commit hook; judgement checks stay advisory. |
 
 The agent plays three roles against that structure — **Librarian** (files what comes in),
 **Advisor** (answers from what's filed), **Project Manager** (tracks what's in flight).
@@ -147,18 +149,25 @@ The agent plays three roles against that structure — **Librarian** (files what
 
 ## Rules that exist because something broke
 
-Running since May 2026, currently **1,563 pages across 9 domains** with **16 skills** and a
+Running since May 2026, currently **1,597 pages across 9 domains** with **20 skills** and a
 log going back to the first week. The useful output of that isn't the page count — it's the
 rules that are in the contract today only because the obvious version failed in practice:
 
 - **`update` was removed as a valid log operation.** An audit found 17 of 26 recent entries
   were `update`, averaging 139 words against a 1–3 line spec, mostly duplicating text already
   written on a project page in the same session. The log was growing ~10× faster than intended.
-- **The central todo file stopped mirroring project todos.** 60 of ~76 mirrored items had
-  silently drifted from the pages they were copied from. It's now pointer-only.
+- **The central todo file was deleted.** It failed twice: first as a mirror (60 of ~76 copied
+  items had silently drifted), then, after being cut back to pointer-only, as a list where
+  roughly a third of the remaining entries had a stale or wrong premise. A file whose job is to
+  tell you what's open, and which is a third wrong, is worse than no file — you trust it. Open
+  work now lives on the page that owns it.
 - **The "split pages over ~500 words" rule was made measurable**, with explicit carve-outs,
   after it turned out 27% of all pages breached it — a rule that flags a quarter of your
   content steers nothing.
+- **The predicate vocabulary doubled, because its checker had a blind spot.** The check that
+  enforced it was scoped to one folder and reported clean for months; measured end to end, 185
+  of 709 relations sat outside that scope carrying 124 off-vocabulary predicates. A check that
+  is right about the region it inspects is not the same thing as a check that is right.
 
 Anyone can write a schema. The interesting part is which parts of it survived contact with
 six months of real use, and that is most of what the docs in this repo are about.
@@ -208,6 +217,15 @@ Then:
 5. **Ingest one thing** — an article, a video, a decision you already made — with
    `/wiki-ingest`. Watch where it files it and correct it. That correction is how the
    contract gets tuned to you.
+6. **Turn on the checks** (optional, 30 seconds, worth it):
+
+   ```bash
+   python3 scripts/lint.py                                    # full report
+   ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit    # block commits on errors
+   ```
+
+   Pure standard library — no install, no dependencies. Errors block a commit, warnings never
+   do, and `git commit --no-verify` bypasses it when you mean to.
 
 Then read [**A Day in the Life**](docs/day-in-the-life.md), which walks three real tasks end
 to end — it'll make the rest of the docs land faster than reading them in order.
@@ -242,8 +260,12 @@ reference material behind it.
 
 ## Status
 
-Early. The system is mature; this repo's packaging of it is not. Expect the docs to land
-before the demo content does.
+Early, but no longer sparse. The system is mature; this repo's packaging of it is catching up.
+Docs, contract, skills, demo content, working checks and a live site are all in.
+
+The repo tracks the wiki it came from, so it changes when the rules change — and the rules change
+when they break. See [11 — Keeping It Honest](docs/11-keeping-it-honest.md) for what broke most
+recently.
 
 ## License
 

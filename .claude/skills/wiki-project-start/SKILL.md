@@ -1,10 +1,11 @@
 ---
 name: wiki-project-start
 description: "Create a new project page in the wiki. Use when the user says 'start a project', 'let's track a new project', 'create project [name]', 'new wiki project', 'I want to begin tracking X', or expresses intent to start, plan or track something new — even if they don't say 'wiki'. Asks for the name and goal, creates the page with all required sections and a GATED plan stub, updates the index, and appends to the log. Never begins implementation work."
+maturity: tested
+outputs: wiki/projects/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: wiki
 ---
 
 # Wiki Project Start
@@ -56,11 +57,43 @@ writing.
 | Section | What goes in it now |
 |---|---|
 | `## Summary` | 2–4 sentences |
+| `## Relations` | Triplet table — see below. Position is fixed: **directly after `## Summary`** |
 | `## Use Cases` | What it must actually do, concretely |
 | `## Hard- and Software` | Options table — the alternatives and their trade-offs — plus a "Selected" subsection marked TBD until decided |
 | `## Plan / Phases` | **Stub only.** See Step 5 |
 | `## Open Questions` | Everything genuinely undecided |
 | `## Log` | One entry: `### [YYYY-MM-DD] Project created` |
+
+### Filling in `## Relations`
+
+**Required on every new project page**, in the slot directly after `## Summary` — the same one
+entity pages use.
+
+```markdown
+## Relations
+
+Full neighbourhood, including relations stored on other pages: `./scripts/relations.py <slug>`
+
+| Subject | Predicate | Object |
+|---|---|---|
+| <slug> | <predicate> | [<entity>](<relative/path.md>) |
+```
+
+- Predicates **must** come from the controlled vocabulary in
+  `domains/knowledge/agents-domain-knowledge.md` — 36 of them. LINT flags anything else, on
+  every page that carries the table.
+- The likely ones for a new project: `evaluates` (anything under consideration — this is the
+  general project→entity predicate), `uses` (something it depends on to run), `builds` (an
+  artifact it will produce), `part_of` (a parent effort), `compared_to` (a sibling project).
+- **Author this with the user, from what they actually said in Step 1. Never infer a relation
+  to avoid an empty table.** A project with one true row is correct; a project with five
+  plausible ones is a graph that lies, and six months later nobody can tell which rows were
+  guesses. If nothing is known yet, keep the pointer line and the header row — that is a
+  complete, valid section.
+- Check what already exists first: `./scripts/relations.py <slug>`. Other pages may already
+  name this project, since each fact is stored once on whichever page reads naturally.
+
+---
 
 The **options table is the highest-value section in the system**. It's where "why not the
 obvious alternative?" gets answered permanently, at the moment you actually know the answer.

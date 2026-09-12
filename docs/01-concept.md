@@ -94,7 +94,9 @@ which is precisely the thing nothing else captures.
 An agent doesn't get bored, so wiki abandonment stops being the binding constraint — and the
 next one appears immediately in its place. When maintenance costs nothing, you get **wiki
 bloat**: too much content, in the wrong places, duplicated across pages. Log entries become
-narrative. A todo list mirrors items that then drift from the pages they were copied from.
+narrative. A central list mirrors items that then drift from the pages they were copied from —
+and once you delete the mirroring, the list rots a second way, quietly, as its remaining entries
+stop being true.
 
 This is the failure mode that actually happens, and it's the worse of the two, because a
 rotting wiki looks empty while a bloated one looks productive. It's also why a significant

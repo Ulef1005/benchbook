@@ -1,10 +1,11 @@
 ---
 name: recipe-capture
 description: "Turn a recipe from anywhere — a link, a photo, a cookbook page, or dictation in chat — into a validated Cooklang file plus its wiki companion page. Use when the user says 'add this recipe', 'capture this recipe', 'save this recipe', pastes a recipe URL, or dictates one. Confirms category and dietary status, checks for an existing recipe with the same slug, writes the .cook and .md pair, validates the Cooklang, and derives the structured fields. Never invents quantities."
+maturity: draft
+outputs: wiki/cooking/recipes/**/*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: cooking
 ---
 
 # Recipe Capture

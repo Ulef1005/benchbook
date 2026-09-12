@@ -73,6 +73,20 @@ per-project build recipes, firmware source whose deployed form is a separate art
 project's subfolder carries a README linking back to its wiki page, and the wiki page links
 forward to the files. Two-way, always.
 
+Three scripts ship at the root, and they are the whole of the tooling:
+
+| Script | Does |
+|---|---|
+| `lint.py` | Every mechanical check, as pure standard library. No install step, so it runs in a fresh clone |
+| `pre-commit.sh` | Git hook around `lint.py --quiet` — blocks a commit on errors, never on warnings |
+| `relations.py` | Reads the `## Relations` graph back in both directions for one page |
+
+**Why these are scripts rather than instructions to the agent.** A mechanical check has one
+correct answer, so computing it with a model is slow, expensive, and — the disqualifying part —
+*differently wrong each run*. A check that varies is not a check. Judgement work goes the other
+way: it belongs with the agent precisely because it can't be reduced to a rule. The split runs
+through the whole system, and `agents-lint-checks.md` is where the line is drawn explicitly.
+
 **Code that is a continuously-running deployed service** lives in a separate infrastructure
 repo, where the on-host path *is* the git working tree. This is the important half. If your
 repo is a *copy* of what's running on a server, the copy rots — someone applies a fix in the

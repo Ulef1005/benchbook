@@ -115,6 +115,12 @@ Two clarifications that resolve most of the remaining ambiguity:
 relations table using a controlled vocabulary of predicates, discrete key facts, when to use
 it, what it compares to, and which sources contributed.
 
+The relations table is worth one specific warning. **If a fact doesn't fit any predicate, it is
+almost always a discrete attribute and belongs in `## Key Facts` instead.** The tell is an object
+that is prose rather than a page — `monitors | "5 backup units, 2 workflows, 3 timers"` is not a
+triple however well the predicate reads, and forcing it in is how a queryable graph turns into a
+second, worse prose section.
+
 **Operational-instance entities** — a specific machine or service you run — opt into two extra
 sections via `change_history: true`:
 

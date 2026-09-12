@@ -1,10 +1,11 @@
 ---
 name: wiki-lint
-description: "Run a full LINT check on the wiki. Use when the user says 'lint the wiki', 'run lint', or '/lint'. Runs the mechanical checker, adds the judgement checks on top, writes a dated report, and syncs todo.md. Report-only for wiki content — never edits page bodies or frontmatter. Offers opt-in archival for stale raw files and log overflow, and never moves anything without confirmation."
+description: "Run a full LINT check on the wiki. Use when the user says 'lint the wiki', 'run lint', or '/lint'. Runs the mechanical checker, drains the review queue, adds the judgement checks on top, and writes a dated report. Report-only for wiki content — never edits page bodies or frontmatter. Offers opt-in archival for stale raw files and log overflow, and never moves anything without confirmation."
+maturity: tested
+outputs: wiki/log/lint-*.md
 license: MIT
 metadata:
   version: 1.0.0
-  category: wiki
 ---
 
 # Wiki Lint
@@ -31,10 +32,6 @@ Implements the mechanical half of `agents-lint-checks.md` — read that file bef
 **Exit code 1 means "findings exist", not "the script failed."** Capture the output; it becomes
 the body of the report.
 
-If `scripts/lint.py` doesn't exist yet, do the mechanical checks by hand from
-`agents-lint-checks.md` and tell the user the script is worth writing — these checks are
-deterministic and shouldn't cost model tokens every run.
-
 **When the schema changes, update `scripts/lint.py` in the same session.** A checker that
 mirrors an older schema produces confident wrong answers.
 
@@ -57,25 +54,30 @@ The checks a script can't do. **Surface findings; change nothing.**
 
 ---
 
-## Step 3 — Sync `wiki/todo.md`
+## Step 3 — Drain the review queue *first*
 
-**Never rewrite the whole file** — `## Wiki Meta` is hand-authored and has no source page.
+Read `wiki/log/review.md` before hunting for anything new. It holds contradictions already
+found and waiting on a human decision.
 
-1. **Closed items:** for each `[x]` on a project or entity page, remove the matching `[ ]` from
-   todo.
-2. **New items:** add `[ ]` items that aren't there yet, under the right heading.
-3. **Findings:** replace `## LINT Findings` with this run's summary, or `No findings.`
+For each open entry: present it, ask for the call, then **write the decision onto the page it
+belongs to and delete the entry.** An entry is removed when it's decided, not archived here —
+the page it was about is the record.
 
-Remember todo is **pointer-only for projects** — link the page, don't mirror its items. Mirrored
-state drifts; in the wiki this came from, 60 of ~76 mirrored items had diverged from their
-sources before that rule changed.
+**This comes before Step 2's new findings on purpose.** A queue that only grows is a queue people
+stop reading, and the point of finding a contradiction is resolving it, not collecting it. If the
+file is empty, say so in one line and move on.
 
 ---
 
 ## Step 4 — Write the report
 
 Write `wiki/log/lint-YYYY-MM-DD.md` (overwrite on a same-day re-run): script output, then
-`## Judgement Checks`, then a summary of todo changes.
+`## Judgement Checks`. New contradictions that need a human decision are appended to
+`wiki/log/review.md` — the dated report is a snapshot, the queue is what survives until someone
+acts on it.
+
+**There is no todo file to sync.** Open work lives on the page that owns it — see
+`agents-core.md` § 6.
 
 Print an inline summary to chat: error count, warning count, top three issues.
 

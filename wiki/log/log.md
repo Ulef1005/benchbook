@@ -65,3 +65,14 @@ safe to remove.
 1 real contradiction found (planted as a test), 0 broken links, todo.md synced (was missing
 the Planned project). `scripts/lint.py` doesn't exist — flagged as a gap. Report:
 `wiki/log/lint-2026-08-29.md`.
+
+## [2026-09-12] create | Review queue replaces the todo file
+
+`wiki/todo.md` deleted; open work now lives on the page it belongs to. Contradictions moved to
+`wiki/log/review.md`, the only standing list. See `agents-core.md` § 6 for why.
+
+## [2026-09-12] create | Relations graph made queryable
+
+Predicate vocabulary 18 → 36; `## Relations` now required on open projects; `scripts/relations.py`
+added for inbound+outbound neighbourhood lookup. `scripts/lint.py` + pre-commit hook shipped.
+
