@@ -2,18 +2,24 @@
 import { getCollection, render } from "astro:content";
 import DocsLayout from "../../layouts/DocsLayout.astro";
 
+// Route on the basename, not the collection id: remark-wiki-links maps any `agents-*.md`
+// link to /contract/<basename>/, and a domain rules file's id carries its folder path.
 export async function getStaticPaths() {
-  return (await getCollection("contract")).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+  return (await getCollection("contract")).map((entry) => ({
+    params: { slug: entry.id.split("/").pop() },
+    props: { entry },
+  }));
 }
 
 const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
-const title = entry.data.title ?? `${entry.id}.md`;
+const name = entry.id.split("/").pop();
+const title = entry.data.title ?? `${name}.md`;
 ---
 <DocsLayout
   title={title}
   section="contract"
-  crumbs={["Contract", `${entry.id}.md`]}
+  crumbs={["Contract", `${name}.md`]}
   headings={headings}
   repoPath={`${entry.id}.md`}
 >

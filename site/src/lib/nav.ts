@@ -18,10 +18,12 @@ export async function docsNav() {
     const g = group(d.id);
     groups.set(g, [...(groups.get(g) ?? []), { label, href: `/docs/${d.id}/` }]);
   }
-  const contract = (await getCollection("contract")).map((c) => ({
-    label: c.id + ".md", href: `/contract/${c.id}/`,
-  }));
-  groups.set("Reference", contract);
+  const contract = (await getCollection("contract")).map((c) => {
+    const name = c.id.split("/").pop()!;
+    return { label: name + ".md", href: `/contract/${name}/`, domain: c.id.includes("/") };
+  });
+  groups.set("Reference", contract.filter((c) => !c.domain));
+  groups.set("Domain rules", contract.filter((c) => c.domain));
   return [...groups].map(([group, items]) => ({ group, items }));
 }
 

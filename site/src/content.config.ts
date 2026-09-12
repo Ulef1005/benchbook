@@ -7,8 +7,11 @@ const docs = defineCollection({
   schema: z.object({ title: z.string().optional(), description: z.string().optional() }).passthrough(),
 });
 
+// The contract set: the root files plus each domain pack's rules file. The domain rules are
+// part of the contract, not supporting material — agents-domain-knowledge.md is where the
+// controlled predicate vocabulary lives, which several docs pages send you to read.
 const contract = defineCollection({
-  loader: glob({ pattern: ["AGENTS.md", "agents-*.md"], base: ".." }),
+  loader: glob({ pattern: ["AGENTS.md", "agents-*.md", "domains/*/agents-domain-*.md"], base: ".." }),
   schema: z.object({ title: z.string().optional() }).passthrough(),
 });
 
