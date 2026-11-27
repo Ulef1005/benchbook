@@ -56,27 +56,37 @@ def main(argv):
     rx = patterns(path)
     try:
         if staged:
-            names = [n for n in git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMRT").decode().split("\0") if n]
+            changed = set(n for n in git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMRT")
+                          .decode("utf-8", "replace").split("\0") if n)
+            entries = git("ls-files", "-s", "-z").decode("utf-8", "replace").split("\0")
+            names = [e.split("\t", 1)[1] for e in entries if "\t" in e and e.split("\t", 1)[1] in changed
+                     and not e.startswith("160000")]   # gitlinks (submodules) have no content here
         else:
-            names = [n for n in git("ls-tree", "-r", "-z", "--name-only", "HEAD").decode().split("\0") if n]
-        hits = []
+            entries = git("ls-tree", "-r", "-z", "HEAD").decode("utf-8", "replace").split("\0")
+            names = [e.split("\t", 1)[1] for e in entries if "\t" in e and e.split()[1] == "blob"]
+        hits, name_hits = [], 0
         for name in names:
             if rx.search(name):
-                hits.append(f"{name} (the file name)")
+                name_hits += 1   # the path itself would show the name in a public log: count it, never print it
             if name == SELF:
                 continue
-            data = git("show", f":{name}" if staged else f"HEAD:{name}")
+            data = git("show", f":./{name}" if staged else f"HEAD:./{name}")
             if b"\0" in data[:8000]:
                 continue   # binary: gitleaks covers secrets, names live in text
             text = data.decode("utf-8", errors="replace")
-            hits += [f"{name}:{n}" for n, line in enumerate(text.splitlines(), 1) if rx.search(line)]
+            shown = "(withheld path)" if rx.search(name) else name
+            hits += [f"{shown}:{n}" for n, line in enumerate(text.splitlines(), 1) if rx.search(line)]
     except subprocess.CalledProcessError as e:
-        print(f"private names: FAILED, git {' '.join(e.cmd[3:5])} did not answer: the check cannot run", file=sys.stderr)
+        print(f"private names: FAILED, git {' '.join(e.cmd[5:7])} did not answer: the check cannot run", file=sys.stderr)
         return 1
+    if name_hits:
+        print(f"private names: FAILED, {name_hits} file name(s) contain a private name (paths withheld: "
+              f"`git ls-files` and the patterns file show which)", file=sys.stderr)
     if hits:
         print(f"private names: FAILED, {len(hits)} line(s) match the maintainer's patterns:", file=sys.stderr)
         for h in hits[:40]:
             print(f"  {h}", file=sys.stderr)
+    if hits or name_hits:
         return 1
     print(f"private names: clean ({len(names)} {'staged ' if staged else ''}file(s))")
     return 0
