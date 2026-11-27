@@ -14,7 +14,7 @@ permissions:
   pull-requests: read  # gitleaks-action lists a pull request's commits
 
 concurrency:
-  group: check-${{ github.event_name }}-${{ github.ref }}-${{ github.event_name == 'push' && github.sha || 'pr' }}   # each push run is its own group: never cancelled or replaced
+  group: check-${{ github.event_name }}-${{ github.ref }}-${{ github.event_name == 'push' && github.sha || github.event.pull_request.draft && 'draft' || 'pr' }}   # each push run is its own group: never cancelled or replaced
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}   # a push run on main always finishes its scan
 
 jobs:
