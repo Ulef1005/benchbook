@@ -41,4 +41,10 @@ if ! python3 scripts/lint.py --quiet; then
   exit 1
 fi
 
+# The maintainer's private names never reach this public repo (Repo Gates, 2026-11-26): the staged content is checked.
+if ! python3 scripts/check_private_names.py --staged; then
+  echo "pre-commit: blocked: a private name is staged (see above)." >&2
+  exit 1
+fi
+
 exit 0

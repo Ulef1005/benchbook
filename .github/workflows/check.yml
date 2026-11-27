@@ -1,0 +1,40 @@
+# The ci tier of benchbook's gate (Repo Gates): the gitleaks action and scripts/check.sh (lint) on every push to main,
+# every pull request and manual start. The private-names check runs only on the Mac (the patterns file never leaves it).
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read  # gitleaks-action lists a pull request's commits
+
+concurrency:
+  group: check-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0  # gitleaks scans the history
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0  # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: Secret scan
+        id: secretscan
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e  # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Mark the secret scan as run   # check.sh fails on GitHub without this marker
+        if: steps.secretscan.outcome == 'success'
+        run: echo "GATE_SECRET_SCAN=done" >> "$GITHUB_ENV"
+      - name: scripts/check.sh
+        run: bash scripts/check.sh
