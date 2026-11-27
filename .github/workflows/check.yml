@@ -1,11 +1,12 @@
 # The ci tier of benchbook's gate (Repo Gates): the gitleaks action and scripts/check.sh (lint) on every push to main,
-# every pull request and manual start. The private-names check runs only on the Mac (the patterns file never leaves it).
+# a pull request marked ready and manual start. A draft runs nothing. The private-names check runs only on the Mac (the patterns file never leaves it).
 name: check
 
 on:
   push:
     branches: [main]
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   workflow_dispatch:
 
 permissions:
@@ -18,6 +19,7 @@ concurrency:
 
 jobs:
   check:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
