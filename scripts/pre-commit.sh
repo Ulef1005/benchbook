@@ -26,8 +26,15 @@ repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
 if ! command -v python3 >/dev/null 2>&1; then
-  echo "pre-commit: python3 not found — skipping lint (commit allowed)." >&2
-  exit 0
+  # a public repo: without python3 the private-names check cannot run, so the commit is blocked (Repo Gates)
+  echo "pre-commit: python3 not found: the private-names check cannot run (commit blocked; --no-verify to override)." >&2
+  exit 1
+fi
+
+# The maintainer's private names never reach this public repo (Repo Gates, 2026-11-26): the staged content is checked.
+if ! python3 scripts/check_private_names.py --staged; then
+  echo "pre-commit: blocked: a private name is staged (see above)." >&2
+  exit 1
 fi
 
 if [ ! -f scripts/lint.py ]; then
@@ -38,12 +45,6 @@ fi
 if ! python3 scripts/lint.py --quiet; then
   echo "pre-commit: blocked by the errors above." >&2
   echo "            Run 'python3 scripts/lint.py' for the full report." >&2
-  exit 1
-fi
-
-# The maintainer's private names never reach this public repo (Repo Gates, 2026-11-26): the staged content is checked.
-if ! python3 scripts/check_private_names.py --staged; then
-  echo "pre-commit: blocked: a private name is staged (see above)." >&2
   exit 1
 fi
 

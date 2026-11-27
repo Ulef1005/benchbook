@@ -14,7 +14,7 @@ permissions:
 
 concurrency:
   group: check-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}   # a push run on main always finishes its scan
 
 jobs:
   check:

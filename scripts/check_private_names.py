@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Private names must never reach this public repository (Repo Gates, 2026-11-26).
 
-    python3 scripts/check_private_names.py            # every tracked file (the land tier, scripts/check.sh)
+    python3 scripts/check_private_names.py            # every file of HEAD, as it lands (scripts/check.sh)
     python3 scripts/check_private_names.py --staged   # the staged content (the commit hook)
+
+File names are checked as well as file content; text that is not UTF-8 is read with replacement characters, so a
+name in Latin-1 text is still found. A git error fails the check.
 
 The patterns are the maintainer's own, one regular expression per line, `#` starts a comment, matched case-insensitively.
 They live outside the repository and never go to CI: BENCHBOOK_PRIVATE_PATTERNS_FILE, else the shared file in ai-wiki
@@ -26,8 +29,11 @@ def patterns(path):
     lines = [ln.strip() for ln in path.read_text().splitlines()]
     expr = [ln for ln in lines if ln and not ln.startswith("#")]
     if not expr:
-        raise SystemExit(f"private names: {path} holds no patterns")
-    return re.compile("|".join(expr), re.IGNORECASE)
+        raise SystemExit(f"private names: FAILED, {path} holds no patterns")
+    try:   # each line its own group, so one line's alternation cannot swallow another's
+        return re.compile("|".join(f"(?:{e})" for e in expr), re.IGNORECASE)
+    except re.error as e:
+        raise SystemExit(f"private names: FAILED, a pattern in {path} is not a valid regex ({e})") from None
 
 
 def git(*args):
@@ -48,20 +54,25 @@ def main(argv):
         print(f"private names: FAILED, no patterns file at {path} (set BENCHBOOK_PRIVATE_PATTERNS_FILE)", file=sys.stderr)
         return 1
     rx = patterns(path)
-    if staged:
-        names = [n for n in git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMR").decode().split("\0") if n]
-    else:
-        names = [n for n in git("ls-files", "-z").decode().split("\0") if n]
-    hits = []
-    for name in names:
-        if name == SELF:
-            continue
-        try:
-            data = git("show", f":{name}") if staged else (ROOT / name).read_bytes()
-            text = data.decode("utf-8")
-        except (UnicodeDecodeError, OSError, subprocess.CalledProcessError):
-            continue   # binary or unreadable: gitleaks covers secrets, names live in text
-        hits += [f"{name}:{n}" for n, line in enumerate(text.splitlines(), 1) if rx.search(line)]
+    try:
+        if staged:
+            names = [n for n in git("diff", "--cached", "--name-only", "-z", "--diff-filter=ACMRT").decode().split("\0") if n]
+        else:
+            names = [n for n in git("ls-tree", "-r", "-z", "--name-only", "HEAD").decode().split("\0") if n]
+        hits = []
+        for name in names:
+            if rx.search(name):
+                hits.append(f"{name} (the file name)")
+            if name == SELF:
+                continue
+            data = git("show", f":{name}" if staged else f"HEAD:{name}")
+            if b"\0" in data[:8000]:
+                continue   # binary: gitleaks covers secrets, names live in text
+            text = data.decode("utf-8", errors="replace")
+            hits += [f"{name}:{n}" for n, line in enumerate(text.splitlines(), 1) if rx.search(line)]
+    except subprocess.CalledProcessError as e:
+        print(f"private names: FAILED, git {' '.join(e.cmd[3:5])} did not answer: the check cannot run", file=sys.stderr)
+        return 1
     if hits:
         print(f"private names: FAILED, {len(hits)} line(s) match the maintainer's patterns:", file=sys.stderr)
         for h in hits[:40]:
